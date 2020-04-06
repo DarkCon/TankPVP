@@ -1,0 +1,759 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933e0cc22e789714c87e348a699023d7, type: 3}
+  m_Name: FR2_Cache
+  m_EditorClassIdentifier: 
+  _autoRefresh: 0
+  _curCacheVersion: 2.0
+  _disabled: 0
+  AssetList:
+  - guid: 00000000000000002000000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: 00000000000000003000000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: 00000000000000004000000000000000
+    loadInfoTS: 0
+    stamp: 1586160142
+    type: 5
+    UseGUIDsList: []
+  - guid: 00000000000000006000000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: 00000000000000007000000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: 00000000000000008000000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 5
+    UseGUIDsList: []
+  - guid: 00000000000000009000000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 5
+    UseGUIDsList: []
+  - guid: 0000000000000000b000000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: 0000000000000000c000000000000000
+    loadInfoTS: 0
+    stamp: 1586159164
+    type: 6
+    UseGUIDsList: []
+  - guid: 00000000000000004100000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: 00000000000000005100000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 5
+    UseGUIDsList: []
+  - guid: 00000000000000006100000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: 00000000000000007100000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: 0000000000000000a100000000000000
+    loadInfoTS: 0
+    stamp: 1586159137
+    type: 6
+    UseGUIDsList: []
+  - guid: 0000000000000000b100000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: 0000000000000000c100000000000000
+    loadInfoTS: 0
+    stamp: 1586159134
+    type: 6
+    UseGUIDsList: []
+  - guid: f5ebb400a358e584cb5fafe5844272bc
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 5
+    UseGUIDsList:
+    - guid: 74721b9f0af448f5ae2e91102a1a5edd
+      ids: 873c0000
+  - guid: 03855040ee3fd2348b2f685e1ac76e8a
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: b899aeb23dba1f54d9e8be4006eaa59f
+      ids: 
+    - guid: 85ae96116ad33604a8c52f3c4209ccde
+      ids: 
+  - guid: dd3672808cdf76541aa3d383c87a5616
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: d5c2f1d0a3c6acc4a9cf0d8f013f14d3
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 85ae96116ad33604a8c52f3c4209ccde
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: bbe59136fbf2df6418fc114fa1d8628d
+      ids: 
+  - guid: bda5b631304c8cb4485d60ef8bda618b
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 7f1ed5d1134de134a9e052ef368e3a84
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: d2a8f0021d6b47c5923d8972dfb81ef1
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: 5d496f720527c984b8acc75a238bbd79
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: d4d815a2bfd253342bfd6542c08315fb
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: b899aeb23dba1f54d9e8be4006eaa59f
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: c0a3345bca32885439593302120b4b18
+      ids: 
+    - guid: 97593f86f8ad9254e9706d930b663434
+      ids: 
+    - guid: 06d56faca4f65694e9377bf7454a7252
+      ids: 
+    - guid: 27ad82c1b11abeb43bbdfcd7f1d6aa89
+      ids: 
+    - guid: 8a76d675d556b944e9cff29d64130eb7
+      ids: 
+  - guid: 6db5b6c2e2bbb4f2093a7cd892ececca
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 933e0cc22e789714c87e348a699023d7
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 1e0a9643dc0d4b46bf2321f72c4e503e
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: d9763cb398cf6e146b74d6b7bac2fe50
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: c50949d305b8c42d7ab69e6a19b56a6a
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: 9124b66e19b3c44bf999ad7566fa6450
+      ids: 
+  - guid: 435323e396d85494daeb5278528fe138
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 5978f8f3dd274e848fbb7a123bde1fb9
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: a2f1c424a60dfbd4fa331449baeac351
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 1c19ec545738c8b469ce7fbd881e84e6
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: b36b906464f1629419a9180272a542a6
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: 1c19ec545738c8b469ce7fbd881e84e6
+      ids: 
+    - guid: c50949d305b8c42d7ab69e6a19b56a6a
+      ids: 
+  - guid: 51d97d64dbac6434cbb39359e4346f89
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: d4d815a2bfd253342bfd6542c08315fb
+      ids: 
+    - guid: dd3672808cdf76541aa3d383c87a5616
+      ids: 
+    - guid: d9763cb398cf6e146b74d6b7bac2fe50
+      ids: 
+    - guid: 903c11a9cf3ba6f4e8c653443c6893a0
+      ids: 
+    - guid: 15fdf079309a3784da2a4435bdfa3335
+      ids: 
+    - guid: 047c7e4af9c032a428c12b7c564a6593
+      ids: 
+    - guid: bda5b631304c8cb4485d60ef8bda618b
+      ids: 
+    - guid: 30393ed590c8fb64da0612e8a2fad8a4
+      ids: 
+    - guid: 2fc48d59edff00f49b8ae717c776ff45
+      ids: 
+    - guid: 435323e396d85494daeb5278528fe138
+      ids: 
+  - guid: 6b62a2942a0a19948b601dc0be99a527
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: c0367155479c84189ad956f35f707b7c
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 8a76d675d556b944e9cff29d64130eb7
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 5
+    UseGUIDsList:
+    - guid: a4865f1ab4504ed8a368670db22f409c
+      ids: 6d2c0000
+  - guid: 658977c5b6e84344581803c8025947d3
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 30393ed590c8fb64da0612e8a2fad8a4
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: bbe59136fbf2df6418fc114fa1d8628d
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: f5ebb400a358e584cb5fafe5844272bc
+      ids: 
+  - guid: 92ca8146ddb5c874b9b1dc1d4564b779
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: d2a8f0021d6b47c5923d8972dfb81ef1
+      ids: 
+    - guid: 04946bac84b8dbc4f8b854782ecbc635
+      ids: 
+    - guid: 1e0a9643dc0d4b46bf2321f72c4e503e
+      ids: 
+    - guid: 3b3fa17df4267024d9186f5271f34b9a
+      ids: 
+  - guid: 29dffe27204f9d5459147d239a58a521
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 47257c77491e24c4f8887864ee0857f0
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: 5651992cdad94894a3af7dc3f1da9170
+      ids: 
+    - guid: 656cf32137825984aa2d16c5a7a247f9
+      ids: 
+    - guid: 5978f8f3dd274e848fbb7a123bde1fb9
+      ids: 
+    - guid: 8820a1c29343ac24aa1620d7493a30cc
+      ids: 
+  - guid: 5f3147f7af4c49739579b966c458f5e4
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: 92ea4518d6ddba64e9ffc990b334ebdf
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: 5d496f720527c984b8acc75a238bbd79
+      ids: 
+    - guid: 456e76650ea7cae40bf11951076572cf
+      ids: 
+    - guid: a2f1c424a60dfbd4fa331449baeac351
+      ids: 
+    - guid: 51d97d64dbac6434cbb39359e4346f89
+      ids: 
+  - guid: 0892af58ca441f64dba2d7af03deb4c9
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: 47a84ebde4ec47fabb620b30cc7a3e5c
+      ids: 
+    - guid: bf3ddaed4fc1de043b471caa732a97ad
+      ids: 
+    - guid: 4d8565a8b6a5fa246a37c6dc7fcdcc19
+      ids: 
+    - guid: a4865f1ab4504ed8a368670db22f409c
+      ids: 
+    - guid: 4d644a4ca30e4c04f9c595bae6918ea0
+      ids: 
+    - guid: d2a5dab92e35e3841aba3acd250605c6
+      ids: 
+    - guid: 74721b9f0af448f5ae2e91102a1a5edd
+      ids: 
+    - guid: 99ec59403a247194ebe64a3b36ed0a4e
+      ids: 
+    - guid: 9aaaf6537ec32d345a8bec6e9e9696c4
+      ids: 
+    - guid: 5f3147f7af4c49739579b966c458f5e4
+      ids: 
+    - guid: 01603937f566671429afd87da3beb2f0
+      ids: 
+    - guid: 5c65184932ff4fd48a343e2360256baf
+      ids: 
+    - guid: 59b821befa085a944901464ae629b79f
+      ids: 
+    - guid: c3b4bad575bb06a4eb531b056eefab4b
+      ids: 
+    - guid: 4873f2a8bdae42baa0406e8a61366ca1
+      ids: 
+    - guid: 4ff1fb6cfd59a1c4eb5061a4667a4193
+      ids: 
+    - guid: c4bb520ad39c70b40b5bda5644863b0e
+      ids: 
+    - guid: 4c8463be289381f4b8d730cc983a131b
+      ids: 
+    - guid: 47257c77491e24c4f8887864ee0857f0
+      ids: 
+    - guid: 92ca8146ddb5c874b9b1dc1d4564b779
+      ids: 
+  - guid: 4873f2a8bdae42baa0406e8a61366ca1
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: 6a4bacb88ad38904f94fce909ff35536
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: a78bffbeb81b48ae9ec71ad7969613e5
+      ids: 
+    - guid: 08379ccefc05200459f90a1c0711a340
+      ids: 
+  - guid: e957a9e8b4f4bce4b8a34e504a8c39d7
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 5c65184932ff4fd48a343e2360256baf
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: 2fc48d59edff00f49b8ae717c776ff45
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 903c11a9cf3ba6f4e8c653443c6893a0
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: e0eebac9e6cbe431ca16d9cb27500785
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: a4865f1ab4504ed8a368670db22f409c
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: 047c7e4af9c032a428c12b7c564a6593
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 7d62736a417e747e481e3aa85951cd18
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 6c8689dad9c3ed341b7088135cb83be6
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 35a721eae1cdbe647a086ad29a339fef
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: e957a9e8b4f4bce4b8a34e504a8c39d7
+      ids: 
+    - guid: 0892af58ca441f64dba2d7af03deb4c9
+      ids: 
+    - guid: 30565587d2ea3b84b9f31b6f9213a807
+      ids: 
+    - guid: 95bb668fca197464e9eef82fa5dfa3f4
+      ids: 
+  - guid: 59de5c9b86a054d2bba67e3b35d00a6d
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: d3ba0d9bfe79ff94ca52a3bd6b6870d4
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 5651992cdad94894a3af7dc3f1da9170
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: 846de4aca6426f74c8cacda9de44511f
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 06d56faca4f65694e9377bf7454a7252
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 5
+    UseGUIDsList:
+    - guid: a4865f1ab4504ed8a368670db22f409c
+      ids: c7e6ffff
+  - guid: 47a84ebde4ec47fabb620b30cc7a3e5c
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: f9b9c04ea6b703343b8aff08a26cf9aa
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 9124b66e19b3c44bf999ad7566fa6450
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: 7f1ed5d1134de134a9e052ef368e3a84
+      ids: 
+    - guid: af50e16ff6b530b4b808183a3ae0722b
+      ids: 
+    - guid: 933e0cc22e789714c87e348a699023d7
+      ids: 
+    - guid: f9b9c04ea6b703343b8aff08a26cf9aa
+      ids: 
+    - guid: d5c2f1d0a3c6acc4a9cf0d8f013f14d3
+      ids: 
+    - guid: b543c2ce7dc56c2418505cbb6cb7852d
+      ids: 
+    - guid: d3ba0d9bfe79ff94ca52a3bd6b6870d4
+      ids: 
+    - guid: 6db5b6c2e2bbb4f2093a7cd892ececca
+      ids: 
+    - guid: 658977c5b6e84344581803c8025947d3
+      ids: 
+    - guid: 026fd8cec188743acb7e03ee6101aab9
+      ids: 
+    - guid: 6b62a2942a0a19948b601dc0be99a527
+      ids: 
+    - guid: 6c8689dad9c3ed341b7088135cb83be6
+      ids: 
+    - guid: c0367155479c84189ad956f35f707b7c
+      ids: 
+    - guid: 7d62736a417e747e481e3aa85951cd18
+      ids: 
+    - guid: e0eebac9e6cbe431ca16d9cb27500785
+      ids: 
+    - guid: 29dffe27204f9d5459147d239a58a521
+      ids: 
+    - guid: 59de5c9b86a054d2bba67e3b35d00a6d
+      ids: 
+    - guid: 846de4aca6426f74c8cacda9de44511f
+      ids: 
+  - guid: 4c8463be289381f4b8d730cc983a131b
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: a78bffbeb81b48ae9ec71ad7969613e5
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: b543c2ce7dc56c2418505cbb6cb7852d
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 026fd8cec188743acb7e03ee6101aab9
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 08379ccefc05200459f90a1c0711a340
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 5
+    UseGUIDsList:
+    - guid: a4865f1ab4504ed8a368670db22f409c
+      ids: bbf5ffff
+  - guid: af50e16ff6b530b4b808183a3ae0722b
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 2
+    UseGUIDsList: []
+  - guid: 95bb668fca197464e9eef82fa5dfa3f4
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: 417783ef8cf45034fb2abd6d7bddeb49
+      ids: 
+    - guid: 03855040ee3fd2348b2f685e1ac76e8a
+      ids: 
+    - guid: 92ea4518d6ddba64e9ffc990b334ebdf
+      ids: 
+  - guid: 74721b9f0af448f5ae2e91102a1a5edd
+    loadInfoTS: 0
+    stamp: 0
+    type: 4
+    UseGUIDsList: []
+  - guid: 417783ef8cf45034fb2abd6d7bddeb49
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: 6a4bacb88ad38904f94fce909ff35536
+      ids: 
+  - guid: c0a3345bca32885439593302120b4b18
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 5
+    UseGUIDsList:
+    - guid: a4865f1ab4504ed8a368670db22f409c
+      ids: 6d430000
+  - guid: 27ad82c1b11abeb43bbdfcd7f1d6aa89
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 5
+    UseGUIDsList:
+    - guid: a4865f1ab4504ed8a368670db22f409c
+      ids: 5b070000
+  - guid: 97593f86f8ad9254e9706d930b663434
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 5
+    UseGUIDsList:
+    - guid: a4865f1ab4504ed8a368670db22f409c
+      ids: 2c1e0000
+  - guid: 30565587d2ea3b84b9f31b6f9213a807
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: 7cabbbd02717bb440a23d87563155398
+      ids: 
+    - guid: f1f27ebe1f2f9cd4882841bdbe895971
+      ids: 
+    - guid: 2760dba6322278c42b4145854204fc26
+      ids: 
+    - guid: 7a4554b0a52925640ae22f8ccfe2bf5f
+      ids: 
+  - guid: f1f27ebe1f2f9cd4882841bdbe895971
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 2760dba6322278c42b4145854204fc26
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 7a4554b0a52925640ae22f8ccfe2bf5f
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 7cabbbd02717bb440a23d87563155398
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 01603937f566671429afd87da3beb2f0
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: d2a5dab92e35e3841aba3acd250605c6
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: c3b4bad575bb06a4eb531b056eefab4b
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 04946bac84b8dbc4f8b854782ecbc635
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: c4bb520ad39c70b40b5bda5644863b0e
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 15fdf079309a3784da2a4435bdfa3335
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 456e76650ea7cae40bf11951076572cf
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 656cf32137825984aa2d16c5a7a247f9
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 8820a1c29343ac24aa1620d7493a30cc
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 59b821befa085a944901464ae629b79f
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 99ec59403a247194ebe64a3b36ed0a4e
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 9aaaf6537ec32d345a8bec6e9e9696c4
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 3b3fa17df4267024d9186f5271f34b9a
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 4d644a4ca30e4c04f9c595bae6918ea0
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 4d8565a8b6a5fa246a37c6dc7fcdcc19
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 4ff1fb6cfd59a1c4eb5061a4667a4193
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: bf3ddaed4fc1de043b471caa732a97ad
+    loadInfoTS: 0
+    stamp: 0
+    type: 9
+    UseGUIDsList: []
+  - guid: 0718928bc865417c994c1384faa9d4bf
+    loadInfoTS: 0
+    stamp: 1586159494
+    type: 1
+    UseGUIDsList: []
+  - guid: 478f45dd7d53f760f8a34fa84565aef4
+    loadInfoTS: 0
+    stamp: 1586160151
+    type: 1
+    UseGUIDsList:
+    - guid: b36b906464f1629419a9180272a542a6
+      ids: 
+    - guid: 35a721eae1cdbe647a086ad29a339fef
+      ids: 
+  priority: 3
+  setting:
+    alternateColor: 1
+    excludeTypes: 0
+    groupMode: 0
+    listIgnore: []
+    pingRow: 1
+    referenceCount: 1
+    rowColor:
+      serializedVersion: 2
+      rgba: 201326592
+    ScanColor:
+      serializedVersion: 2
+      rgba: 4284926976
+    SelectedColor: {r: 0, g: 0, b: 1, a: 0.25}
+    showFileSize: 0
+    showSelection: 0
+    showUsedByClassed: 1
+    sortMode: 0
+    treeIndent: 10
+  timeStamp: 1586160211
