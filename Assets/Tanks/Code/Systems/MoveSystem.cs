@@ -11,6 +11,9 @@ public sealed class MoveSystem : UpdateSystem {
     private Filter filterPos;
     private Filter filterDirection;
     
+    private readonly RaycastHit2D[] raycastResult = new RaycastHit2D[1];
+    private ContactFilter2D contactFilter = new ContactFilter2D(); 
+    
     public override void OnAwake() {
         var filterMove = this.World.Filter.With<MoveComponent>();
         
@@ -30,9 +33,22 @@ public sealed class MoveSystem : UpdateSystem {
         for (int i = 0, length = this.filterPos.Length; i < length; ++i) {
             ref var moveComponent = ref moveBag.GetComponent(i);
             ref var posComponent = ref posBag.GetComponent(i);
+            var entity = filterPos.GetEntity(i);
 
             var moveVector = DirectionVector.Get(moveComponent.direction);
-            posComponent.position += moveComponent.speed * deltaTime * moveVector;
+            var distance = moveComponent.speed * deltaTime;
+            
+            if (entity.Has<ObstacleComponent>()) {
+                ref var obstacleComponent = ref entity.GetComponent<ObstacleComponent>();
+                var angle = (Vector2.SignedAngle(Vector2.right, moveVector) + 180f) % 360f;
+                this.contactFilter.SetNormalAngle(angle - 1f, angle + 1f);
+                if (obstacleComponent.collider.Cast(moveVector, this.contactFilter, this.raycastResult, distance) > 0) {
+                    var result = this.raycastResult[0];
+                    distance = result.distance;
+                }
+            }
+            
+            posComponent.position += distance * moveVector;
         }
     }
 
