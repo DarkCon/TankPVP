@@ -7,14 +7,20 @@ using UnityEngine;
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [RequireComponent(typeof(SpriteRenderer))]
-public sealed class SpriteProvider : MonoProvider<SpriteComponent> {
+public class SpriteProvider : MonoProvider<SpriteComponent> {
     protected override void Initialize() {
         base.Initialize();
         ref var component = ref this.GetData();
-        component.spriteDecoder = new TankSpriteDecoder();
-        if (!component.spriteDecoder.Init(component.spriteRenderer.sprite)) {
+        var sprite = component.spriteRenderer.sprite;
+        if (sprite != null)
+            component.spriteDecoder = CreateSpriteDecoder(sprite);
+        if (sprite == null || !component.spriteDecoder.Init(sprite)) {
             Debug.LogError("fail init SpriteDecoder!");
         }
+    }
+
+    protected virtual ISpriteDecoder CreateSpriteDecoder(Sprite sprite) {
+        return new EmptySpriteDecoder();
     }
 
     private void Reset() {

@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 1247678281189268826}
   - component: {fileID: 1247678281189268827}
   - component: {fileID: 3960695699035995329}
-  - component: {fileID: 1214519621064868804}
   - component: {fileID: -5961501207110381838}
+  - component: {fileID: 8642362402281665525}
+  - component: {fileID: -4623333220185778685}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Untagged
@@ -99,21 +100,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     transform: {fileID: 1247678281189268826}
---- !u!114 &1214519621064868804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1247678281189268824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fa637c5d62b6a13888bfd9d113062ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializedData:
-    spriteRenderer: {fileID: 1247678281189268827}
-    direction: 0
 --- !u!114 &-5961501207110381838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,3 +114,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     direction: 1
+--- !u!114 &8642362402281665525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247678281189268824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7674a4c5d0cdbf2b89c64a08e7a2c659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedData:
+    spriteRenderer: {fileID: 1247678281189268827}
+    direction: 0
+  nextFrameOffset: 29
+  framesCount: 2
+  hasDirections: 1
+--- !u!114 &-4623333220185778685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247678281189268824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438a0625a8a0407d29b23c49a97591e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedData:
+    distance: 0.125
