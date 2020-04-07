@@ -14,8 +14,9 @@
 /[Mm]emoryCaptures/
 /[Aa]ssets/AssetStoreTools*
 
-### Temp Assets
-/[Aa]ssets/ThirdParty/Temp*
+### Morpeh
+/[Aa]ssets/ScriptTemplates*
+/[Aa]ssets/Plugins/FindReference2/FR2_Cache.asset*
 
 # Unity3D generated file on crash reports
 sysinfo.txt
@@ -49,3 +50,4 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+Будет удалено Assets/Battle City Assets/Resources/Tanks.png~
