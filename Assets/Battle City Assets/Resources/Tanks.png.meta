@@ -724,10 +724,10 @@ TextureImporter:
     second: bigbang_3
   - first:
       213: 516478887524087030
-    second: Tanks_240
+    second: projectile_1
   - first:
       213: 533234968431540508
-    second: Tanks_241
+    second: projectile_2
   - first:
       213: 3081477470891049830
     second: selection_0
@@ -742,7 +742,7 @@ TextureImporter:
     second: Tanks_245
   - first:
       213: 1093034773776431483
-    second: Tanks_246
+    second: projectile_3
   - first:
       213: -190271487387132224
     second: Tanks_247
@@ -3847,10 +3847,10 @@ TextureImporter:
     second: bigbang_3
   - first:
       213: 2070374506556394898
-    second: Tanks_240
+    second: projectile_1
   - first:
       213: 1997798482526268284
-    second: Tanks_241
+    second: projectile_2
   - first:
       213: -9125408142655507252
     second: selection_0
@@ -3919,7 +3919,7 @@ TextureImporter:
     second: Tanks_238
   - first:
       213: -3242044484852273680
-    second: Tanks_239
+    second: projectile_0
   - first:
       213: -9125408142655507252
     second: Tanks_242
@@ -3931,7 +3931,7 @@ TextureImporter:
     second: Tanks_245
   - first:
       213: 6439198745011490741
-    second: Tanks_246
+    second: projectile_3
   - first:
       213: -6792205471036212416
     second: Tanks_247
@@ -8979,7 +8979,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tanks_239
+      name: projectile_0
       rect:
         serializedVersion: 2
         x: 96
@@ -9399,7 +9399,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tanks_240
+      name: projectile_1
       rect:
         serializedVersion: 2
         x: 104
@@ -9420,7 +9420,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tanks_241
+      name: projectile_2
       rect:
         serializedVersion: 2
         x: 112
@@ -9441,7 +9441,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tanks_246
+      name: projectile_3
       rect:
         serializedVersion: 2
         x: 120

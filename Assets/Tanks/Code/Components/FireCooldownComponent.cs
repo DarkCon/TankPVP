@@ -6,9 +6,6 @@ using Unity.IL2CPP.CompilerServices;
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [System.Serializable]
-public struct AnimateSpriteComponent : IComponent {
-    public float duration;
-    public bool loop;
+public struct FireCooldownComponent : IComponent {
     public float time;
-    public bool destroyOnEnd;
 }

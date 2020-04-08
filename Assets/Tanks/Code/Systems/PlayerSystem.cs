@@ -8,26 +8,30 @@ using Unity.IL2CPP.CompilerServices;
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(PlayerSystem))]
 public sealed class PlayerSystem : UpdateSystem {
-    public float Speed = 1f;
-    
     private Filter filter;
     
     public override void OnAwake() {
         this.filter = this.World.Filter
             .With<PlayerMarker>()
-            .With<PositionComponent>();
+            .With<TankComponent>();
     }
 
     public override void OnUpdate(float deltaTime) {
         var moveDirection = GetDirectionFromInput();
+        var needFire = GetFireInput();
         foreach (var entity in this.filter) {
+            ref var tankComponent = ref entity.GetComponent<TankComponent>(); 
             if (moveDirection != Direction.NONE) {
                 entity.SetComponent(new MoveComponent {
                     direction = moveDirection,
-                    speed = this.Speed
+                    speed = tankComponent.speed
                 });
             } else {
                 entity.RemoveComponent<MoveComponent>();
+            }
+
+            if (needFire) {
+                entity.SetComponent(new FireEventComponent());
             }
         }
     }
@@ -42,5 +46,9 @@ public sealed class PlayerSystem : UpdateSystem {
         if (Input.GetKey(KeyCode.D)) 
             return Direction.RIGHT;
         return Direction.NONE;
+    }
+
+    private static bool GetFireInput() {
+        return Input.GetKey(KeyCode.Space);
     }
 }

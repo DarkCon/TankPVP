@@ -9,6 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3bb2cd42ac0be53a83f71a55526f65b, type: 3}
-  m_Name: PlayerSystemObj
+  m_Script: {fileID: 11500000, guid: 3dc822c8bb3d45a6b4cf343b1b37d829, type: 3}
+  m_Name: ProjectileHitSystemObj
   m_EditorClassIdentifier: 
+  BangPrefab: {fileID: 2578250206337404594, guid: 9e87f8006b49b397ebfb5539285073df,
+    type: 3}

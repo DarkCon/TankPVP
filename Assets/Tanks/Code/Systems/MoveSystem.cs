@@ -1,5 +1,6 @@
 ﻿using Morpeh;
 using Tanks.Constants;
+using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
 
@@ -10,9 +11,6 @@ using Unity.IL2CPP.CompilerServices;
 public sealed class MoveSystem : UpdateSystem {
     private Filter filterPos;
     private Filter filterDirection;
-    
-    private readonly RaycastHit2D[] raycastResult = new RaycastHit2D[1];
-    private ContactFilter2D contactFilter = new ContactFilter2D(); 
     
     public override void OnAwake() {
         var filterMove = this.World.Filter.With<MoveComponent>();
@@ -40,16 +38,24 @@ public sealed class MoveSystem : UpdateSystem {
             
             if (entity.Has<ObstacleComponent>()) {
                 ref var obstacleComponent = ref entity.GetComponent<ObstacleComponent>();
-                var angle = (Vector2.SignedAngle(Vector2.right, moveVector) + 180f) % 360f;
-                this.contactFilter.SetNormalAngle(angle - 1f, angle + 1f);
-                if (obstacleComponent.collider.Cast(moveVector, this.contactFilter, this.raycastResult, distance) > 0) {
-                    var result = this.raycastResult[0];
-                    distance = result.distance;
+                if (PhysicsHelper.CastObstacle(obstacleComponent, moveVector, distance, out var hit)) {
+                    distance = hit.distance;
+                    CreateCollisionEvent(entity, hit);
                 }
             }
             
             posComponent.position += distance * moveVector;
         }
+    }
+
+    private static void CreateCollisionEvent(IEntity entity, RaycastHit2D hit) {
+        var otherProvider = hit.transform.GetComponent<EntityProvider>() ??
+                            hit.transform.GetComponentInParent<EntityProvider>();
+        var otherEntity = otherProvider != null ? otherProvider.Entity : null; 
+        entity.SetComponent(new HitEventComponent {
+            otherEntity = otherEntity,
+            hit = hit
+        });
     }
 
     private void UpdateDirections() {

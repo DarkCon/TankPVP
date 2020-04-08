@@ -226,11 +226,19 @@ MonoBehaviour:
   - enabled: 1
     system: {fileID: 11400000, guid: 7721fde3c3305ae6a8993e62c0a5264e, type: 2}
   - enabled: 1
+    system: {fileID: 11400000, guid: 9cf1817ae6aaf353e91a8cf96c81a3b6, type: 2}
+  - enabled: 1
     system: {fileID: 11400000, guid: 52346d1178ba6dafcb376f55f37b4aa0, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: 263764016175b5c469143bc968a69548, type: 2}
   - enabled: 1
+    system: {fileID: 11400000, guid: 85e0c3fffbf459063b30e691177fb8c9, type: 2}
+  - enabled: 1
     system: {fileID: 11400000, guid: 4d15013b7a21125a3b220b12b5052702, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 149840ea48497c81896c6e297a01673d, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 2583c27ade36505ae80f1df14b934552, type: 2}
   fixedUpdateSystems: []
   lateUpdateSystems: []
 --- !u!4 &488520514
@@ -345,7 +353,7 @@ PrefabInstance:
     - target: {fileID: 303662564893566712, guid: 4a68ed34771885e9c84710386ab4486c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 303662564893566712, guid: 4a68ed34771885e9c84710386ab4486c,
         type: 3}
@@ -396,6 +404,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileWater
+      objectReference: {fileID: 0}
+    - target: {fileID: 303662564893566715, guid: 4a68ed34771885e9c84710386ab4486c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a68ed34771885e9c84710386ab4486c, type: 3}
@@ -483,7 +496,7 @@ PrefabInstance:
     - target: {fileID: 5611426055502972928, guid: e8ca0425bc5c6002f8572de2bd155d18,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5611426055502972928, guid: e8ca0425bc5c6002f8572de2bd155d18,
         type: 3}
@@ -534,6 +547,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TileBrick
+      objectReference: {fileID: 0}
+    - target: {fileID: 7031355988299817512, guid: e8ca0425bc5c6002f8572de2bd155d18,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8ca0425bc5c6002f8572de2bd155d18, type: 3}

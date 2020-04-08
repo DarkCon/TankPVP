@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1247678281189268826}
   - component: {fileID: 1247678281189268827}
+  - component: {fileID: 7066960216761579714}
+  - component: {fileID: 8456543665310109255}
   - component: {fileID: 3960695699035995329}
   - component: {fileID: -5961501207110381838}
   - component: {fileID: 8642362402281665525}
@@ -17,6 +19,7 @@ GameObject:
   - component: {fileID: 1642649103859977019}
   - component: {fileID: 7412674429502781656}
   - component: {fileID: 8504123557147041379}
+  - component: {fileID: -6508879740226022511}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Untagged
@@ -89,6 +92,40 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7066960216761579714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247678281189268824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28b37c9deb82ae7148459676953c7c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedData:
+    hitPoints: 2
+--- !u!114 &8456543665310109255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247678281189268824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633c53da9228b31aa949039b234dd54c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedData:
+    speed: 2
+    fireCooldown: 1
+    projectile:
+      ownerEntityId: 0
+      team: 0
+      speed: 6
+      damage: 1
 --- !u!114 &3960695699035995329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,3 +247,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-6508879740226022511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247678281189268824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52d4f73412da55512833df93158f3604, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedData:
+    position: {x: 0, y: 0, z: 0}

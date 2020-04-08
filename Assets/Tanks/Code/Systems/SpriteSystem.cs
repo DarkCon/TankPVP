@@ -1,4 +1,4 @@
-﻿using Morpeh;
+using Morpeh;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
 
@@ -73,6 +73,8 @@ public sealed class SpriteSystem : UpdateSystem {
             var entity = this.filterAnimate.GetEntity(i);
             
             if (!animateComponent.loop && animateComponent.time >= animateComponent.duration) {
+                if (animateComponent.destroyOnEnd)
+                    entity.SetComponent(new DestroyEventComponent());
                 entity.RemoveComponent<AnimateSpriteComponent>();
             } else {
                 animateComponent.time += deltaTime;
