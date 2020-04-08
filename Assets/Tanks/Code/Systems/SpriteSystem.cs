@@ -1,4 +1,4 @@
-using Morpeh;
+﻿using Morpeh;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
 
@@ -26,10 +26,10 @@ public sealed class SpriteSystem : UpdateSystem {
     }
 
     public override void OnUpdate(float deltaTime) {
-        UpdateAnimationsOnMoving();
         UpdateDirections();
         UpdateSprites();
         UpdateAnimations(deltaTime);
+        UpdateAnimationsOnMoving();
     }
 
     private void UpdateDirections() {
