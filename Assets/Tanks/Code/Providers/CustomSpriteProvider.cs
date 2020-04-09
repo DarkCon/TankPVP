@@ -12,30 +12,10 @@ public sealed class CustomSpriteProvider : SpriteProvider {
     [SerializeField] private bool hasDirections;
     
     protected override ISpriteDecoder CreateSpriteDecoder(Sprite sprite) {
-        if (ParseSpriteNameId(sprite.name, out var baseName, out var baseId)) {
-            return new CustomSpriteDecoder {
-                nextFrameOffset = this.nextFrameOffset,
-                framesCount = this.framesCount,
-                hasDirections = this.hasDirections,
-                baseName = baseName,
-                baseId = baseId
-            };
-        } else {
-            Debug.LogError("Wrong sprite name for CustomSpriteProvider");
-            return base.CreateSpriteDecoder(sprite);
-        }
-    }
-    
-    private static bool ParseSpriteNameId(string spriteName, out string baseName, out int baseId) {
-        baseName = spriteName;
-        baseId = 0;
-        var match = Regex.Match(spriteName, @"(\D*)(\d+)");
-        if (match.Success) {
-            baseName = match.Groups[1].Value;
-            baseId = int.Parse(match.Groups[2].Value);
-            return true;
-        }
-
-        return false;
+        return new CustomSpriteDecoder {
+            nextFrameOffset = this.nextFrameOffset,
+            framesCount = this.framesCount,
+            hasDirections = this.hasDirections
+        };
     }
 }
