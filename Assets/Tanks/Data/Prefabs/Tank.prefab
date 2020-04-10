@@ -299,3 +299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     photonView: {fileID: 8391748265038162963}
+  sync:
+    Position: 1
+    Direction: 1
+    Move: 1

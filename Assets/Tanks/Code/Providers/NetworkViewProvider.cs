@@ -1,7 +1,6 @@
-﻿using System;
-using Morpeh;
+﻿using Morpeh;
 using Photon.Pun;
-using Tanks.Utils;
+using Tanks.Constants;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
 
@@ -10,6 +9,15 @@ using UnityEngine;
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [RequireComponent(typeof(PhotonView))]
 public sealed class NetworkViewProvider : MonoProvider<NetworkViewComponent>, IPunObservable {
+    [System.Serializable]
+    public struct WhatSync {
+        public bool Position;
+        public bool Direction;
+        public bool Move;
+    }
+
+    [SerializeField] private WhatSync sync;
+    
     private void Reset() {
         ref var component = ref this.GetData();
         var photonView = this.GetComponent<PhotonView>();
@@ -17,17 +25,44 @@ public sealed class NetworkViewProvider : MonoProvider<NetworkViewComponent>, IP
         photonView.ObservedComponents.RemoveAll( c => c == null);
         if (!photonView.ObservedComponents.Contains(this))
             photonView.ObservedComponents.Add(this);
-        
-        photonView.RefreshRpcMonoBehaviourCache();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         var entity = this.Entity;
         
         if (stream.IsWriting) {
-            stream.SendNext(entity.GetComponent<PositionComponent>());
+            if (sync.Position) {
+                stream.SendNext(entity.GetComponent<PositionComponent>().position);
+            }
+            if (sync.Direction) {
+                stream.SendNext((int)entity.GetComponent<DirectionComponent>().direction);
+            }
+            if (sync.Move) {
+                if (entity.Has<MoveComponent>()) {
+                    stream.SendNext(true);
+                    stream.SendNext((int) entity.GetComponent<MoveComponent>().direction);
+                    stream.SendNext(entity.GetComponent<MoveComponent>().speed);
+                } else {
+                    stream.SendNext(false);
+                }
+            }
         } else {
-            entity.SetComponent((PositionComponent) stream.ReceiveNext());
+            if (sync.Position) {
+                entity.SetComponent(new PositionComponent {position = (Vector3) stream.ReceiveNext()});
+            }
+            if (sync.Direction) {
+                entity.SetComponent(new  DirectionComponent { direction = (Direction) stream.ReceiveNext()});
+            }
+            if (sync.Move) {
+                if ((bool) stream.ReceiveNext()) {
+                    entity.SetComponent(new MoveComponent {
+                        direction = (Direction) stream.ReceiveNext(),
+                        speed = (float) stream.ReceiveNext()
+                    });
+                } else {
+                    entity.RemoveComponent<MoveComponent>();
+                }
+            }
         }
     }
 }

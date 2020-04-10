@@ -59,6 +59,7 @@ public sealed class LevelInitializer : Initializer {
         for (int i = 0, length = filterSpawns.Length; i < length; ++i) {
             ref var posComponent = ref posBag.GetComponent(i);
             ref var spawnComponent = ref spawnBag.GetComponent(i);
+            var spawnEntity = filterSpawns.GetEntity(i);
 
             if (spawnComponent.team < players.Length) {
                 var player = players[spawnComponent.team];
@@ -70,6 +71,9 @@ public sealed class LevelInitializer : Initializer {
                 
                 ref var spriteComponent = ref tankEntity.GetComponent<SpriteComponent>();
                 spriteComponent.spriteDecoder.OverrideBaseSpriteByName(player.tankSprite);
+                if (spawnEntity.Has<DirectionComponent>()) {
+                    tankEntity.SetComponent(spawnEntity.GetComponent<DirectionComponent>());
+                }
                 if (spawnComponent.isPlayer && player.isLocal) {
                     tankEntity.AddComponent<PlayerControlMarker>();
                 }
