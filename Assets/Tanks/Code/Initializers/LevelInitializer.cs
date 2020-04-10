@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using Morpeh;
 using Photon.Pun;
-using Tanks;
 using Tanks.Constants;
 using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine.SceneManagement;
+using Network = Tanks.Utils.Network;
 
 [Il2CppSetOption(Option.NullChecks, false)]
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
@@ -71,6 +71,8 @@ public sealed class LevelInitializer : Initializer {
                 
                 ref var spriteComponent = ref tankEntity.GetComponent<SpriteComponent>();
                 spriteComponent.spriteDecoder.OverrideBaseSpriteByName(player.tankSprite);
+                Network.RaiseMyEvent(tankEntity, NetworkEvent.CHANGE_SPRITE, player.tankSprite);
+                
                 if (spawnEntity.Has<DirectionComponent>()) {
                     tankEntity.SetComponent(spawnEntity.GetComponent<DirectionComponent>());
                 }
@@ -80,6 +82,9 @@ public sealed class LevelInitializer : Initializer {
                 tankEntity.SetComponent(new TeamComponent {
                     team = spawnComponent.team
                 });
+                tankEntity.SetComponent(new LocalControlComponent());
+                
+                Network.RaiseMyEvent(tankEntity, NetworkEvent.SET_TEAM, spawnComponent.team);
             }
         }
     }

@@ -38,9 +38,9 @@ public sealed class MoveSystem : UpdateSystem {
             
             if (entity.Has<ObstacleComponent>()) {
                 ref var obstacleComponent = ref entity.GetComponent<ObstacleComponent>();
-                if (PhysicsHelper.CastObstacle(obstacleComponent, moveVector, distance, out var hit)) {
+                if (PhysicsHelper.CastObstacle(obstacleComponent, moveVector, distance, out var hit)
+                && CreateCollisionEvent(entity, hit)) {
                     distance = hit.distance;
-                    CreateCollisionEvent(entity, hit);
                 }
             }
             
@@ -48,14 +48,21 @@ public sealed class MoveSystem : UpdateSystem {
         }
     }
 
-    private static void CreateCollisionEvent(IEntity entity, RaycastHit2D hit) {
+    private static bool CreateCollisionEvent(IEntity entity, RaycastHit2D hit) {
         var otherProvider = hit.transform.GetComponent<EntityProvider>() ??
                             hit.transform.GetComponentInParent<EntityProvider>();
-        var otherEntity = otherProvider != null ? otherProvider.Entity : null; 
+        var otherEntity = otherProvider != null ? otherProvider.Entity : null;
+        
+        if (otherEntity != null && otherEntity.Has<ProjectileComponent>() && entity.Has<TankComponent>()
+            && otherEntity.GetComponent<ProjectileComponent>().ownerEntityId == entity.ID) {
+            return false;
+        }
+        
         entity.SetComponent(new HitEventComponent {
             otherEntity = otherEntity,
             hit = hit
         });
+        return true;
     }
 
     private void UpdateDirections() {

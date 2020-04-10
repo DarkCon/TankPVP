@@ -10,17 +10,16 @@ using Unity.IL2CPP.CompilerServices;
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(FireSystem))]
 public sealed class FireSystem : UpdateSystem {
     private Filter filterCooldown;
-    private Filter filterCanFire;
+    private Filter filterFire;
 
     public override void OnAwake() {
-        this.filterCooldown = this.World.Filter.With<FireCooldownComponent>();
+        this.filterCooldown = this.World.Filter.With<LocalControlComponent>().With<FireCooldownComponent>();
         
-        this.filterCanFire = this.World.Filter
+        this.filterFire = this.World.Filter
             .With<TankComponent>()
             .With<DirectionComponent>()
             .With<PositionComponent>()
-            .With<FireEventComponent>()
-            .Without<FireCooldownComponent>();
+            .With<FireEventComponent>();
     }
 
     public override void OnUpdate(float deltaTime) {
@@ -42,29 +41,30 @@ public sealed class FireSystem : UpdateSystem {
     }
 
     private void FireUpdate() {
-        var tankBag = this.filterCanFire.Select<TankComponent>();
-        var dirBag = this.filterCanFire.Select<DirectionComponent>();
-        var posBag = this.filterCanFire.Select<PositionComponent>();
-        for (int i = 0, length = this.filterCanFire.Length; i < length; ++i) {
-            var entity = this.filterCanFire.GetEntity(i);
+        var tankBag = this.filterFire.Select<TankComponent>();
+        var dirBag = this.filterFire.Select<DirectionComponent>();
+        var posBag = this.filterFire.Select<PositionComponent>();
+        for (int i = 0, length = this.filterFire.Length; i < length; ++i) {
+            var entity = this.filterFire.GetEntity(i);
             ref var tankComponent = ref tankBag.GetComponent(i);
             var dirComponent = dirBag.GetComponent(i);
             var posComponent = posBag.GetComponent(i); //copy, no ref
 
             DoFire(entity, tankComponent.projectile, posComponent, dirComponent);
-            
-            entity.SetComponent(new FireCooldownComponent {
-                time = tankComponent.fireCooldown
-            });
+
+            if (entity.Has<LocalControlComponent>()) {
+                entity.SetComponent(new FireCooldownComponent {
+                    time = tankComponent.fireCooldown
+                });
+            }
         }
     }
 
     private void DoFire(IEntity ownerEntity, ProjectileComponent projectileComponent, PositionComponent posComponent, DirectionComponent dirComponent) {
-        var projectileEntity = ObjectsPool.Main.Take("Projectile", posComponent.position);
         
         var dirVector = DirectionVector.Get(dirComponent.direction);
-        posComponent.position += PhysicsHelper.GetPointOnObstacleEdgeOffset(ownerEntity, dirVector)
-                              - PhysicsHelper.GetPointOnObstacleEdgeOffset(projectileEntity, -dirVector);
+        posComponent.position += PhysicsHelper.GetPointOnObstacleEdgeOffset(ownerEntity, dirVector);
+        var projectileEntity = ObjectsPool.Main.Take("Projectile", posComponent.position);
         
         if (ownerEntity.Has<TeamComponent>())
             projectileComponent.team = ownerEntity.GetComponent<TeamComponent>().team;
@@ -76,5 +76,7 @@ public sealed class FireSystem : UpdateSystem {
             speed = projectileComponent.speed,
             direction = dirComponent.direction
         });
+        
+        ownerEntity.SetComponent(new FireAcceptedEventComponent());
     }
 }

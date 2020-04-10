@@ -75,7 +75,8 @@ public sealed class SpriteSystem : UpdateSystem {
             if (!animateComponent.loop && animateComponent.time >= animateComponent.duration) {
                 if (animateComponent.destroyOnEnd)
                     entity.SetComponent(new DestroyEventComponent());
-                entity.RemoveComponent<AnimateSpriteComponent>();
+                else
+                    entity.RemoveComponent<AnimateSpriteComponent>();
             } else {
                 animateComponent.time += deltaTime;
                 if (animateComponent.loop)

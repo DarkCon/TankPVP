@@ -30,7 +30,7 @@ public sealed class PlayerSystem : UpdateSystem {
                 entity.RemoveComponent<MoveComponent>();
             }
 
-            if (needFire) {
+            if (needFire && !entity.Has<FireCooldownComponent>()) {
                 entity.SetComponent(new FireEventComponent());
             }
         }

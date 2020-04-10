@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: -5857027651790024655}
   - component: {fileID: 7984263821167920710}
   - component: {fileID: 9111434064083240180}
+  - component: {fileID: 5040721500144603736}
+  - component: {fileID: -930814065572625135}
   m_Layer: 0
   m_Name: TileBrickPart
   m_TagString: Untagged
@@ -155,3 +157,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     hitPoints: 1
+--- !u!114 &5040721500144603736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326042407187963365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-930814065572625135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326042407187963365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37dbec7f7a69f7628f66a4cd9be8c27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedData:
+    photonView: {fileID: 5040721500144603736}
+  sync:
+    Position: 0
+    Direction: 0
+    Move: 0
