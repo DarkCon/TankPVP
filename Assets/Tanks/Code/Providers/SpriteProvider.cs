@@ -1,4 +1,4 @@
-﻿using Morpeh;
+﻿﻿using Morpeh;
 using Tanks.Sprites;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
@@ -8,15 +8,21 @@ using UnityEngine;
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [RequireComponent(typeof(SpriteRenderer))]
 public class SpriteProvider : MonoProvider<SpriteComponent> {
+    private ISpriteDecoder spriteDecoderCache;
+    
     protected override void Initialize() {
         base.Initialize();
         ref var component = ref this.GetData();
-        var sprite = component.spriteRenderer.sprite;
-        if (sprite != null)
-            component.spriteDecoder = CreateSpriteDecoder(sprite);
-        if (sprite == null || !component.spriteDecoder.Init(sprite)) {
-            Debug.LogError("fail init SpriteDecoder!");
+        if (this.spriteDecoderCache == null) {
+            var sprite = component.spriteRenderer.sprite;
+            if (sprite != null)
+                this.spriteDecoderCache = CreateSpriteDecoder(sprite);
+            if (sprite == null || !this.spriteDecoderCache.Init(sprite)) {
+                Debug.LogError("fail init SpriteDecoder!");
+            }
         }
+
+        component.spriteDecoder = this.spriteDecoderCache;
     }
 
     protected virtual ISpriteDecoder CreateSpriteDecoder(Sprite sprite) {

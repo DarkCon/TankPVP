@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 7412674429502781656}
   - component: {fileID: 8504123557147041379}
   - component: {fileID: -6508879740226022511}
+  - component: {fileID: 8391748265038162963}
+  - component: {fileID: 2412346025550697219}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Untagged
@@ -261,3 +263,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     position: {x: 0, y: 0, z: 0}
+--- !u!114 &8391748265038162963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247678281189268824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 2412346025550697219}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &2412346025550697219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247678281189268824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37dbec7f7a69f7628f66a4cd9be8c27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializedData:
+    photonView: {fileID: 8391748265038162963}

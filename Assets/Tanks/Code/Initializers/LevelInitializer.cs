@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Morpeh;
 using Photon.Pun;
+using Tanks;
 using Tanks.Constants;
 using Tanks.Utils;
 using UnityEngine;
@@ -12,8 +13,6 @@ using UnityEngine.SceneManagement;
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [CreateAssetMenu(menuName = "ECS/Initializers/" + nameof(LevelInitializer))]
 public sealed class LevelInitializer : Initializer {
-    public EntityProvider TankPrefab;
-    
     private struct PlayerInitInfo {
         public string tankSprite;
         public bool isLocal;
@@ -24,7 +23,7 @@ public sealed class LevelInitializer : Initializer {
         SpawnTanks();
     }
 
-    private void PrepareEntitiesInScene() {
+    private static void PrepareEntitiesInScene() {
         var currentScene = SceneManager.GetActiveScene();
         foreach (var entityProvider in GameObject.FindObjectsOfType<EntityProvider>()) {
             var entity = entityProvider.Entity;
@@ -36,23 +35,21 @@ public sealed class LevelInitializer : Initializer {
         }
     }
 
-    private void SpawnTanks() {
-        PlayerInitInfo[] players; 
+    private void SpawnTanks() { 
         if (PhotonNetwork.IsConnected) {
-            players = PhotonNetwork.PlayerList.Select(player => new PlayerInitInfo {
+            SpawnTanks(true, PhotonNetwork.PlayerList.Select(player => new PlayerInitInfo {
                 isLocal = player.IsLocal,
                 tankSprite = (string) player.CustomProperties[TanksGame.PLAYER_TANK_SPRITE]
-            }).ToArray();
+            }).ToArray());
         } else {
-            players = new[] {new PlayerInitInfo {
+            SpawnTanks(false, new[] {new PlayerInitInfo {
                 isLocal = true,
                 tankSprite = null
-            }};
+            }});
         }
-        SpawnTanks(players);
     }
 
-    private void SpawnTanks(PlayerInitInfo[] players) {
+    private void SpawnTanks(bool networkSpawn, PlayerInitInfo[] players) {
         var filterSpawns = this.World.Filter
             .With<SpawnComponent>()
             .With<PositionComponent>();
@@ -65,16 +62,17 @@ public sealed class LevelInitializer : Initializer {
 
             if (spawnComponent.team < players.Length) {
                 var player = players[spawnComponent.team];
-                var tankEntity = EntityHelper.Instantiate(TankPrefab, posComponent.position);
+                if (networkSpawn && !player.isLocal) {
+                    continue;
+                }
+                
+                var tankEntity = ObjectsPool.Main.Take("Tank", posComponent.position, networkSpawn);
                 
                 ref var spriteComponent = ref tankEntity.GetComponent<SpriteComponent>();
                 spriteComponent.spriteDecoder.OverrideBaseSpriteByName(player.tankSprite);
-                
                 if (spawnComponent.isPlayer && player.isLocal) {
                     tankEntity.AddComponent<PlayerControlMarker>();
                 }
-                
-                tankEntity.SetComponent(posComponent);
                 tankEntity.SetComponent(new TeamComponent {
                     team = spawnComponent.team
                 });

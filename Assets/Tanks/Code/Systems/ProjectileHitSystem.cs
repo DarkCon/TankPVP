@@ -8,8 +8,6 @@ using Unity.IL2CPP.CompilerServices;
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(ProjectileHitSystem))]
 public sealed class ProjectileHitSystem : UpdateSystem {
-    public EntityProvider BangPrefab;
-    
     private Filter filter;
     
     public override void OnAwake() {
@@ -66,7 +64,7 @@ public sealed class ProjectileHitSystem : UpdateSystem {
         }
     }
 
-    private void MakeBangEffect(Vector2 hitPoint) {
-        var bangEntity = EntityHelper.Instantiate(BangPrefab, hitPoint);
+    private void MakeBangEffect(Vector2 position) {
+        var bangEntity = ObjectsPool.Main.Take("ProjectileBang", position);
     }
 }

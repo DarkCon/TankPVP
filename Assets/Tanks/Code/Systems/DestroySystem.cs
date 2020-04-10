@@ -8,8 +8,6 @@ using Unity.IL2CPP.CompilerServices;
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(DestroySystem))]
 public sealed class DestroySystem : UpdateSystem {
-    public EntityProvider TankBangPrefab;
-    
     private Filter filterKilledTanks;
     private Filter filterDestroy;
     
@@ -29,13 +27,14 @@ public sealed class DestroySystem : UpdateSystem {
         for (int i = 0, length = this.filterKilledTanks.Length; i < length; ++i) {
             var position = posBag.GetComponent(i).position;
 
-            var bangEntity = EntityHelper.Instantiate(TankBangPrefab, position);
+            var bangEntity = ObjectsPool.Main.Take("TankBang", position);
         }
     }
 
     private void HandleDestroyed() {
         foreach (var entity in this.filterDestroy) {
-            EntityHelper.Destroy(entity, this.World);
+            entity.RemoveComponent<DestroyEventComponent>();
+            ObjectsPool.Main.Return(entity, this.World);
         }
     }
 }

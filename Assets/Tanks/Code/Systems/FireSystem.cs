@@ -9,8 +9,6 @@ using Unity.IL2CPP.CompilerServices;
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(FireSystem))]
 public sealed class FireSystem : UpdateSystem {
-    public EntityProvider ProjectilePrefab;
-    
     private Filter filterCooldown;
     private Filter filterCanFire;
 
@@ -52,10 +50,6 @@ public sealed class FireSystem : UpdateSystem {
             ref var tankComponent = ref tankBag.GetComponent(i);
             var dirComponent = dirBag.GetComponent(i);
             var posComponent = posBag.GetComponent(i); //copy, no ref
-            
-            var dirVector = DirectionVector.Get(dirComponent.direction);
-            posComponent.position += PhysicsHelper.GetPointOnObstacleEdgeOffset(entity, dirVector)
-                                     - PhysicsHelper.GetPointOnObstacleEdgeOffset(ProjectilePrefab, -dirVector);
 
             DoFire(entity, tankComponent.projectile, posComponent, dirComponent);
             
@@ -66,7 +60,11 @@ public sealed class FireSystem : UpdateSystem {
     }
 
     private void DoFire(IEntity ownerEntity, ProjectileComponent projectileComponent, PositionComponent posComponent, DirectionComponent dirComponent) {
-        var projectileEntity = EntityHelper.Instantiate(ProjectilePrefab, posComponent.position);
+        var projectileEntity = ObjectsPool.Main.Take("Projectile", posComponent.position);
+        
+        var dirVector = DirectionVector.Get(dirComponent.direction);
+        posComponent.position += PhysicsHelper.GetPointOnObstacleEdgeOffset(ownerEntity, dirVector)
+                              - PhysicsHelper.GetPointOnObstacleEdgeOffset(projectileEntity, -dirVector);
         
         if (ownerEntity.Has<TeamComponent>())
             projectileComponent.team = ownerEntity.GetComponent<TeamComponent>().team;
