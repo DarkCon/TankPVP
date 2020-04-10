@@ -4,7 +4,7 @@ using Tanks.Constants;
 using UnityEngine;
 
 namespace Tanks.Sprites {
-    public class CustomSpriteDecoder : ISpriteDecoder {
+    public class CustomSpriteDecoder : BaseSpriteDecoder {
         public int nextFrameOffset = 29;
         public int framesCount = 2;
         public bool hasDirections;
@@ -19,9 +19,11 @@ namespace Tanks.Sprites {
             public Sprite sprite;
         }
 
-        public bool Init(Sprite baseSprite) {
-            if (baseSprite == null) 
+        public override bool Init(Sprite baseSprite) {
+            if (!base.Init(baseSprite))
                 return false;
+
+            baseSprite = this.baseSprite;
 
             if (!ParseSpriteNameId(baseSprite.name, out this.baseName, out this.baseId))
                 return false;
@@ -76,7 +78,7 @@ namespace Tanks.Sprites {
             }
         }
 
-        public Sprite GetSprite(Direction direction, float animationNormalized) {
+        public override Sprite GetSprite(Direction direction, float animationNormalized) {
             var frame = Mathf.Min(Mathf.FloorToInt(animationNormalized * framesCount), framesCount - 1);
             return GetSpriteFrame(direction, frame);
         }

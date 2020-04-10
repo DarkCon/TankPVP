@@ -20,7 +20,7 @@ public class SpriteProvider : MonoProvider<SpriteComponent> {
     }
 
     protected virtual ISpriteDecoder CreateSpriteDecoder(Sprite sprite) {
-        return new EmptySpriteDecoder();
+        return new BaseSpriteDecoder();
     }
 
     private void Reset() {

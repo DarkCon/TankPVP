@@ -12,7 +12,7 @@ public sealed class PlayerSystem : UpdateSystem {
     
     public override void OnAwake() {
         this.filter = this.World.Filter
-            .With<PlayerMarker>()
+            .With<PlayerControlMarker>()
             .With<TankComponent>();
     }
 
