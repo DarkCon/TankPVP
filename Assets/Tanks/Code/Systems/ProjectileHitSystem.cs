@@ -1,7 +1,9 @@
 ﻿using Morpeh;
+using Tanks.Constants;
 using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
+using Network = Tanks.Utils.Network;
 
 [Il2CppSetOption(Option.NullChecks, false)]
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
@@ -9,12 +11,15 @@ using Unity.IL2CPP.CompilerServices;
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(ProjectileHitSystem))]
 public sealed class ProjectileHitSystem : UpdateSystem {
     private Filter filter;
+    private bool canUseMasterLogic;
     
     public override void OnAwake() {
         this.filter = this.World.Filter.With<HitEventComponent>();
     }
 
     public override void OnUpdate(float deltaTime) {
+        this.canUseMasterLogic = Network.CanUseMasterLogic();
+        
         var hitBag = this.filter.Select<HitEventComponent>();
         for (int i = 0, length = this.filter.Length; i < length; ++i) {
             var entity = this.filter.GetEntity(i);
@@ -48,11 +53,13 @@ public sealed class ProjectileHitSystem : UpdateSystem {
                 if (otherEntity.Has<TeamComponent>() &&
                     otherEntity.GetComponent<TeamComponent>().team == projectileComponent.team) {
                     isFriendlyFire = true;
-                } else {
+                } else if (this.canUseMasterLogic) {
                     ref var hitPointsComponent = ref otherEntity.GetComponent<HitPointsComponent>();
                     hitPointsComponent.hitPoints -= projectileComponent.damage;
                     if (hitPointsComponent.hitPoints <= 0) {
                         otherEntity.SetComponent(new DestroyEventComponent());
+                    } else {
+                        Network.RaiseMasterEvent(otherEntity, NetworkEvent.SET_HITPOINTS, hitPointsComponent.hitPoints);
                     }
                 }
             }

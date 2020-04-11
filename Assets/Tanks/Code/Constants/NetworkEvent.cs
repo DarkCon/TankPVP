@@ -3,6 +3,7 @@ namespace Tanks.Constants {
         MANUAL_INSTANTIATE,
         CHANGE_SPRITE,
         SET_TEAM,
+        SET_HITPOINTS,
         FIRE,
         DESTROY,
         UNKNOWN,

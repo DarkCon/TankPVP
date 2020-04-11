@@ -54,6 +54,9 @@ public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
                 case NetworkEvent.SET_TEAM:
                     entity.SetComponent(new TeamComponent { team = (int) data[0]});
                     break;
+                case NetworkEvent.SET_HITPOINTS:
+                    entity.SetComponent(new HitPointsComponent {hitPoints = (int) data[0]});
+                    break;
                 case NetworkEvent.FIRE:
                     entity.SetComponent(new FireEventComponent());
                     break;
