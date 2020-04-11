@@ -21,15 +21,15 @@ public sealed class ProjectileHitSystem : UpdateSystem {
             ref var hitEventComponent = ref hitBag.GetComponent(i);
 
             if (entity.Has<ProjectileComponent>()) {
-                HandleProjectileHit(entity, hitEventComponent.otherEntity, hitEventComponent.hit);
+                HandleProjectileHit(entity, hitEventComponent.otherEntity, hitEventComponent.overlap);
             }
             if (!hitEventComponent.otherEntity.IsNullOrDisposed() && hitEventComponent.otherEntity.Has<ProjectileComponent>()) {
-                HandleProjectileHit(hitEventComponent.otherEntity, entity, hitEventComponent.hit);
+                HandleProjectileHit(hitEventComponent.otherEntity, entity, hitEventComponent.overlap);
             }
         }
     }
 
-    private void HandleProjectileHit(IEntity projectileEntity, IEntity otherEntity, RaycastHit2D hit) {
+    private void HandleProjectileHit(IEntity projectileEntity, IEntity otherEntity, PhysicsHelper.Overlap2D contact) {
         ref var projectileComponent = ref projectileEntity.GetComponent<ProjectileComponent>();
         
         if (!otherEntity.IsNullOrDisposed() && projectileComponent.ownerEntityId == otherEntity.ID)
@@ -60,7 +60,7 @@ public sealed class ProjectileHitSystem : UpdateSystem {
         
         projectileEntity.SetComponent(new DestroyEventComponent());
         if (!otherIsProjectile && !isFriendlyFire) {
-            MakeBangEffect(hit.point);
+            MakeBangEffect(contact.distance.pointB);
         }
     }
 

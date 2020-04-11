@@ -718,7 +718,9 @@ MonoBehaviour:
     system: {fileID: 11400000, guid: 149840ea48497c81896c6e297a01673d, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: 2583c27ade36505ae80f1df14b934552, type: 2}
-  fixedUpdateSystems: []
+  fixedUpdateSystems:
+  - enabled: 1
+    system: {fileID: 11400000, guid: 1e4dee5a1feb894cb81fda54f0e0d2c1, type: 2}
   lateUpdateSystems: []
 --- !u!4 &488520514
 Transform:

@@ -1,4 +1,5 @@
 ﻿using Morpeh;
+using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
 
@@ -9,5 +10,5 @@ using Unity.IL2CPP.CompilerServices;
 public struct HitEventComponent : IComponent {
     public bool isInitiator;
     public IEntity otherEntity;
-    public RaycastHit2D hit;
+    public PhysicsHelper.Overlap2D overlap;
 }
