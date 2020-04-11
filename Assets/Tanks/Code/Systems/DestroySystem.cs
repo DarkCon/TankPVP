@@ -1,4 +1,5 @@
 ﻿using Morpeh;
+using Tanks.Constants;
 using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
@@ -10,16 +11,24 @@ using Unity.IL2CPP.CompilerServices;
 public sealed class DestroySystem : UpdateSystem {
     private Filter filterKilledTanks;
     private Filter filterDestroy;
+    private Filter filterKilledBases;
     
     public override void OnAwake() {
-        this.filterDestroy = this.World.Filter.With<DestroyEventComponent>();
+        var filterDestroy = this.World.Filter.With<DestroyEventComponent>();
         
-        this.filterKilledTanks = this.filterDestroy.With<TankComponent>().With<PositionComponent>();
+        this.filterDestroy = filterDestroy.Without<BaseComponent>();
+        
+        this.filterKilledTanks = filterDestroy
+            .With<TankComponent>()
+            .With<PositionComponent>();
+        
+        this.filterKilledBases = filterDestroy.With<BaseComponent>().With<SpriteComponent>();
     }
 
     public override void OnUpdate(float deltaTime) {
         HandleKilledTanks();
         HandleDestroyed();
+        HandleKilledBases();
     }
 
     private void HandleKilledTanks() {
@@ -35,6 +44,17 @@ public sealed class DestroySystem : UpdateSystem {
         foreach (var entity in this.filterDestroy) {
             entity.RemoveComponent<DestroyEventComponent>();
             ObjectsPool.Main.Return(entity, this.World);
+        }
+    }
+
+    private void HandleKilledBases() {
+        var spriteBag = this.filterKilledBases.Select<SpriteComponent>();
+        for (int i = 0, length = this.filterKilledBases.Length; i < length; ++i) {
+            var spriteComponent = spriteBag.GetComponent(i);
+            spriteComponent.spriteRenderer.sprite = spriteComponent.spriteDecoder.GetSprite(Direction.NONE, 1f);
+            
+            var entity = this.filterKilledBases.GetEntity(i);
+            entity.RemoveComponent<DestroyEventComponent>();
         }
     }
 }

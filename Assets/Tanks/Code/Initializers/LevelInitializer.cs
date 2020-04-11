@@ -35,18 +35,22 @@ public sealed class LevelInitializer : Initializer {
         }
     }
 
-    private void SpawnTanks() { 
-        if (PhotonNetwork.IsConnected) {
-            SpawnTanks(true, PhotonNetwork.PlayerList.Select(player => new PlayerInitInfo {
+    private void SpawnTanks() {
+        var network = PhotonNetwork.IsConnected;
+        PlayerInitInfo[] players; 
+        if (network) {
+            players = PhotonNetwork.PlayerList.Select(player => new PlayerInitInfo {
                 isLocal = player.IsLocal,
                 tankSprite = (string) player.CustomProperties[TanksGame.PLAYER_TANK_SPRITE]
-            }).ToArray());
+            }).ToArray();
         } else {
-            SpawnTanks(false, new[] {new PlayerInitInfo {
+            players = new[] {new PlayerInitInfo {
                 isLocal = true,
                 tankSprite = null
-            }});
+            }};
         }
+        SpawnTanks(network, players);
+        SpawnBases(network, players);
     }
 
     private void SpawnTanks(bool networkSpawn, PlayerInitInfo[] players) {
@@ -86,6 +90,21 @@ public sealed class LevelInitializer : Initializer {
                 
                 Network.RaiseMyEvent(tankEntity, NetworkEvent.SET_TEAM, spawnComponent.team);
             }
+        }
+    }
+
+    private void SpawnBases(bool network, PlayerInitInfo[] players) {
+        var filterSpawns = this.World.Filter
+            .With<BaseComponent>()
+            .With<TeamComponent>();
+        
+        var teamBag = filterSpawns.Select<TeamComponent>();
+        for (int i = 0, length = filterSpawns.Length; i < length; ++i) {
+            ref var teamComponent = ref teamBag.GetComponent(i);
+            if (teamComponent.team >= players.Length) {
+                var entity = filterSpawns.GetEntity(i);
+                ObjectsPool.Main.Return(entity, this.World);
+            } 
         }
     }
 }
