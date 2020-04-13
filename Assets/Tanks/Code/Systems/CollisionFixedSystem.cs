@@ -7,8 +7,8 @@ using Unity.IL2CPP.CompilerServices;
 [Il2CppSetOption(Option.NullChecks, false)]
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
-[CreateAssetMenu(menuName = "ECS/Systems/" + nameof(HitEventFixedSystem))]
-public sealed class HitEventFixedSystem : FixedUpdateSystem {
+[CreateAssetMenu(menuName = "ECS/Systems/" + nameof(CollisionFixedSystem))]
+public sealed class CollisionFixedSystem : FixedUpdateSystem {
     private Filter filterMoved;
     
     public override void OnAwake() {

@@ -6,5 +6,5 @@ using Unity.IL2CPP.CompilerServices;
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [System.Serializable]
-public struct FireAcceptedEventComponent : IComponent {
+public struct WantFireEventComponent : IComponent {
 }

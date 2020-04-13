@@ -9,10 +9,12 @@ using Unity.IL2CPP.CompilerServices;
 public sealed class CleanupEventsSystem : UpdateSystem {
     private Filter filterHit;
     private Filter filterFire;
+    private Filter filterWantFire;
     
     public override void OnAwake() {
         this.filterHit = this.World.Filter.With<HitEventComponent>();
-        this.filterFire = this.World.Filter.With<FireEventComponent>().With<FireAcceptedEventComponent>();
+        this.filterFire = this.World.Filter.With<FireEventComponent>();
+        this.filterWantFire = this.World.Filter.With<WantFireEventComponent>();
     }
 
     public override void OnUpdate(float deltaTime) {
@@ -21,7 +23,9 @@ public sealed class CleanupEventsSystem : UpdateSystem {
         }
         foreach (var entity in this.filterFire) {
             entity.RemoveComponent<FireEventComponent>();
-            entity.RemoveComponent<FireAcceptedEventComponent>();
+        }
+        foreach (var entity in this.filterWantFire) {
+            entity.RemoveComponent<WantFireEventComponent>();
         }
     }
 }

@@ -6,7 +6,6 @@ using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine.SceneManagement;
-using Network = Tanks.Utils.Network;
 
 [Il2CppSetOption(Option.NullChecks, false)]
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
@@ -50,7 +49,7 @@ public sealed class LevelInitializer : Initializer {
             }};
         }
         SpawnTanks(network, players);
-        SpawnBases(network, players);
+        RemoveExtraBases(players);
     }
 
     private void SpawnTanks(bool networkSpawn, PlayerInitInfo[] players) {
@@ -75,7 +74,7 @@ public sealed class LevelInitializer : Initializer {
                 
                 ref var spriteComponent = ref tankEntity.GetComponent<SpriteComponent>();
                 spriteComponent.spriteDecoder.OverrideBaseSpriteByName(player.tankSprite);
-                Network.RaiseMyEvent(tankEntity, NetworkEvent.CHANGE_SPRITE, player.tankSprite);
+                NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.CHANGE_SPRITE, player.tankSprite);
                 
                 if (spawnEntity.Has<DirectionComponent>()) {
                     tankEntity.SetComponent(spawnEntity.GetComponent<DirectionComponent>());
@@ -86,14 +85,15 @@ public sealed class LevelInitializer : Initializer {
                 tankEntity.SetComponent(new TeamComponent {
                     team = spawnComponent.team
                 });
-                tankEntity.SetComponent(new LocalControlComponent());
+                NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.SET_TEAM, spawnComponent.team);
                 
-                Network.RaiseMyEvent(tankEntity, NetworkEvent.SET_TEAM, spawnComponent.team);
+                tankEntity.SetComponent(new LocalControlComponent());
+                tankEntity.SetComponent(new LifeComponent {lifeCount = TanksGame.PLAYER_LIFE_COUNT});
             }
         }
     }
 
-    private void SpawnBases(bool network, PlayerInitInfo[] players) {
+    private void RemoveExtraBases(PlayerInitInfo[] players) {
         var filterSpawns = this.World.Filter
             .With<BaseComponent>()
             .With<TeamComponent>();

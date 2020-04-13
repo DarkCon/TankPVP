@@ -3,9 +3,9 @@ using Morpeh;
 using Photon.Pun;
 using Photon.Realtime;
 using Tanks.Constants;
+using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
-using Network = Tanks.Utils.Network;
 
 [Il2CppSetOption(Option.NullChecks, false)]
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
@@ -19,7 +19,7 @@ public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
         PhotonNetwork.AddCallbackTarget(this);
         var filterSync = this.World.Filter.With<NetworkViewComponent>();
         this.filterDestroy = filterSync.With<DestroyEventComponent>();
-        this.filterFire = filterSync.With<FireAcceptedEventComponent>();
+        this.filterFire = filterSync.With<FireEventComponent>();
     }
 
     public override void Dispose() {
@@ -28,13 +28,17 @@ public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
     }
 
     public override void OnUpdate(float deltaTime) {
-        foreach (var entity in this.filterFire) {
-            Network.RaiseMyEvent(entity, NetworkEvent.FIRE);
+        var fireBag = this.filterFire.Select<FireEventComponent>();
+        for (int i = 0, length = this.filterFire.Length; i < length; ++i) {
+            var entity = this.filterFire.GetEntity(i);
+            ref var fireComponent = ref fireBag.GetComponent(i);
+            NetworkHelper.RaiseMyEventToOthers(entity, NetworkEvent.FIRE, 
+                fireComponent.position, (int) fireComponent.direction);
         }
         
         if (PhotonNetwork.IsMasterClient) {
             foreach (var entity in this.filterDestroy) {
-                Network.RaiseMasterEvent(entity, NetworkEvent.DESTROY);
+                NetworkHelper.RaiseMasterEventToOthers(entity, NetworkEvent.DESTROY);
             }
         }
     }
@@ -44,7 +48,7 @@ public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
             || photonEvent.Code >= (byte) NetworkEvent.UNKNOWN)
             return;
 
-        if (Network.FindEventTarget(photonEvent, out var entity, out var data)) {
+        if (NetworkHelper.FindEventTarget(photonEvent, out var entity, out var data)) {
             var ev = (NetworkEvent) photonEvent.Code;
             switch (ev) {
                 case NetworkEvent.CHANGE_SPRITE:
@@ -58,7 +62,10 @@ public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
                     entity.SetComponent(new HitPointsComponent {hitPoints = (int) data[0]});
                     break;
                 case NetworkEvent.FIRE:
-                    entity.SetComponent(new FireEventComponent());
+                    entity.SetComponent(new FireEventComponent { 
+                        position = (Vector3) data[0], 
+                        direction = (Direction) data[1]}
+                    );
                     break;
                 case NetworkEvent.DESTROY:
                     entity.SetComponent(new DestroyEventComponent());

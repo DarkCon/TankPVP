@@ -6,16 +6,16 @@ using Tanks.Constants;
 using UnityEngine;
 
 namespace Tanks.Utils {
-    public static class Network {
-        public static void RaiseMasterEvent(IEntity entity, NetworkEvent ev, params object[] addData) {
-            RaiseEvent(false, entity, ev, addData);
+    public static class NetworkHelper {
+        public static void RaiseMasterEventToOthers(IEntity entity, NetworkEvent ev, params object[] addData) {
+            RaiseEvent(ReceiverGroup.Others, false, entity, ev, addData);
         }
 
-        public static void RaiseMyEvent(IEntity entity, NetworkEvent ev, params object[] addData) {
-            RaiseEvent(true, entity, ev, addData);
+        public static void RaiseMyEventToOthers(IEntity entity, NetworkEvent ev, params object[] addData) {
+            RaiseEvent(ReceiverGroup.Others, true, entity, ev, addData);
         }
         
-        private static void RaiseEvent(bool onlyIfMyEntity, IEntity entity, NetworkEvent ev, params object[] addData) {
+        private static void RaiseEvent(ReceiverGroup receivers, bool onlyIfMyEntity, IEntity entity, NetworkEvent ev, params object[] addData) {
             if (!entity.Has<NetworkViewComponent>()) {
                 Debug.LogError("Entity must has NetworkViewComponent for RaiseEvents");
                 return;
@@ -29,7 +29,7 @@ namespace Tanks.Utils {
                 addData
             };
             var raiseEventOptions = new RaiseEventOptions {
-                Receivers = ReceiverGroup.Others,
+                Receivers = receivers,
                 CachingOption = EventCaching.AddToRoomCache
             };
             var sendOptions = new SendOptions {
