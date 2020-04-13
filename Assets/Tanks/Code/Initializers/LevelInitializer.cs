@@ -55,13 +55,16 @@ public sealed class LevelInitializer : Initializer {
     private void SpawnTanks(bool networkSpawn, PlayerInitInfo[] players) {
         var filterSpawns = this.World.Filter
             .With<SpawnComponent>()
-            .With<PositionComponent>();
+            .With<PositionComponent>()
+            .With<DirectionComponent>();
         
         var spawnBag = filterSpawns.Select<SpawnComponent>();
         var posBag = filterSpawns.Select<PositionComponent>();
+        var dirBag = filterSpawns.Select<DirectionComponent>();
         for (int i = 0, length = filterSpawns.Length; i < length; ++i) {
-            ref var posComponent = ref posBag.GetComponent(i);
             ref var spawnComponent = ref spawnBag.GetComponent(i);
+            ref var posComponent = ref posBag.GetComponent(i);
+            ref var dirComponent = ref dirBag.GetComponent(i);
             var spawnEntity = filterSpawns.GetEntity(i);
 
             if (spawnComponent.team < players.Length) {
@@ -76,19 +79,21 @@ public sealed class LevelInitializer : Initializer {
                 spriteComponent.spriteDecoder.OverrideBaseSpriteByName(player.tankSprite);
                 NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.CHANGE_SPRITE, player.tankSprite);
                 
-                if (spawnEntity.Has<DirectionComponent>()) {
-                    tankEntity.SetComponent(spawnEntity.GetComponent<DirectionComponent>());
-                }
-                if (spawnComponent.isPlayer && player.isLocal) {
-                    tankEntity.AddComponent<PlayerControlMarker>();
-                }
+                
+                tankEntity.SetComponent(dirComponent);
+                tankEntity.SetComponent(new LifeComponent {lifeCount = TanksGame.PLAYER_LIFE_COUNT});
+                
                 tankEntity.SetComponent(new TeamComponent {
                     team = spawnComponent.team
                 });
                 NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.SET_TEAM, spawnComponent.team);
                 
-                tankEntity.SetComponent(new LocalControlComponent());
-                tankEntity.SetComponent(new LifeComponent {lifeCount = TanksGame.PLAYER_LIFE_COUNT});
+                if (player.isLocal) {
+                    tankEntity.SetComponent(new LocalControlComponent());
+                    if (spawnComponent.isPlayer) {
+                        tankEntity.AddComponent<PlayerControlMarker>();
+                    }
+                }
             }
         }
     }
