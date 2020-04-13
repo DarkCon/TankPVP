@@ -9,7 +9,6 @@ using Unity.IL2CPP.CompilerServices;
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(DestroySystem))]
 public sealed class DestroySystem : UpdateSystem {
-    private Filter filterKilledTanks;
     private Filter filterDestroy;
     private Filter filterKilledBases;
     
@@ -18,26 +17,12 @@ public sealed class DestroySystem : UpdateSystem {
         
         this.filterDestroy = filterDestroy.Without<BaseComponent>();
         
-        this.filterKilledTanks = filterDestroy
-            .With<TankComponent>()
-            .With<PositionComponent>();
-        
         this.filterKilledBases = filterDestroy.With<BaseComponent>().With<SpriteComponent>();
     }
 
     public override void OnUpdate(float deltaTime) {
-        HandleKilledTanks();
         HandleDestroyed();
         HandleKilledBases();
-    }
-
-    private void HandleKilledTanks() {
-        var posBag = this.filterKilledTanks.Select<PositionComponent>();
-        for (int i = 0, length = this.filterKilledTanks.Length; i < length; ++i) {
-            var position = posBag.GetComponent(i).position;
-
-            var bangEntity = ObjectsPool.Main.Take("TankBang", position);
-        }
     }
 
     private void HandleDestroyed() {

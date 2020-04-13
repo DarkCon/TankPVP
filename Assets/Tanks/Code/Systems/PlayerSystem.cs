@@ -31,7 +31,7 @@ public sealed class PlayerSystem : UpdateSystem {
             }
 
             if (needFire && !entity.Has<FireCooldownComponent>()) {
-                entity.SetComponent(new FireEventComponent());
+                entity.SetComponent(new WantFireEventComponent());
             }
         }
     }

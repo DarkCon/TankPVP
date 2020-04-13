@@ -78,10 +78,8 @@ public sealed class LevelInitializer : Initializer {
                 ref var spriteComponent = ref tankEntity.GetComponent<SpriteComponent>();
                 spriteComponent.spriteDecoder.OverrideBaseSpriteByName(player.tankSprite);
                 NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.CHANGE_SPRITE, player.tankSprite);
-                
-                
+
                 tankEntity.SetComponent(dirComponent);
-                tankEntity.SetComponent(new LifeComponent {lifeCount = TanksGame.PLAYER_LIFE_COUNT});
                 
                 tankEntity.SetComponent(new TeamComponent {
                     team = spawnComponent.team

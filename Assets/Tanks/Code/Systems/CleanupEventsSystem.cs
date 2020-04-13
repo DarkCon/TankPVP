@@ -10,11 +10,13 @@ public sealed class CleanupEventsSystem : UpdateSystem {
     private Filter filterHit;
     private Filter filterFire;
     private Filter filterWantFire;
+    private Filter filterTankKilled;
     
     public override void OnAwake() {
         this.filterHit = this.World.Filter.With<HitEventComponent>();
         this.filterFire = this.World.Filter.With<FireEventComponent>();
         this.filterWantFire = this.World.Filter.With<WantFireEventComponent>();
+        this.filterTankKilled = this.World.Filter.With<TankKilledEventComponent>();
     }
 
     public override void OnUpdate(float deltaTime) {
@@ -26,6 +28,9 @@ public sealed class CleanupEventsSystem : UpdateSystem {
         }
         foreach (var entity in this.filterWantFire) {
             entity.RemoveComponent<WantFireEventComponent>();
+        }
+        foreach (var entity in this.filterTankKilled) {
+            entity.RemoveComponent<TankKilledEventComponent>();
         }
     }
 }

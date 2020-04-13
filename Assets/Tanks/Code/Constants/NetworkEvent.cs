@@ -5,7 +5,8 @@ namespace Tanks.Constants {
         SET_TEAM,
         SET_HITPOINTS,
         FIRE,
+        TANK_KILLED,
         DESTROY,
-        UNKNOWN,
+        UNKNOWN
     }
 }

@@ -3,7 +3,6 @@ using Tanks.Constants;
 using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
-using Network = Tanks.Utils.Network;
 
 [Il2CppSetOption(Option.NullChecks, false)]
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
@@ -18,7 +17,7 @@ public sealed class ProjectileHitSystem : UpdateSystem {
     }
 
     public override void OnUpdate(float deltaTime) {
-        this.canUseMasterLogic = Network.CanUseMasterLogic();
+        this.canUseMasterLogic = NetworkHelper.CanUseMasterLogic();
         
         var hitBag = this.filter.Select<HitEventComponent>();
         for (int i = 0, length = this.filter.Length; i < length; ++i) {
@@ -49,7 +48,7 @@ public sealed class ProjectileHitSystem : UpdateSystem {
             
             if (otherEntity.Has<ProjectileComponent>()) {
                 otherIsProjectile = true;
-            } else if (otherEntity.Has<HitPointsComponent>()) {
+            } else if (otherEntity.Has<HitPointsComponent>() && !otherEntity.Has<InvulnerabilityComponent>()) {
                 if (otherEntity.Has<TeamComponent>() &&
                     otherEntity.GetComponent<TeamComponent>().team == projectileComponent.team) {
                     isFriendlyFire = true;
@@ -59,7 +58,7 @@ public sealed class ProjectileHitSystem : UpdateSystem {
                     if (hitPointsComponent.hitPoints <= 0) {
                         otherEntity.SetComponent(new DestroyEventComponent());
                     } else {
-                        Network.RaiseMasterEvent(otherEntity, NetworkEvent.SET_HITPOINTS, hitPointsComponent.hitPoints);
+                        NetworkHelper.RaiseMasterEventToOthers(otherEntity, NetworkEvent.SET_HITPOINTS, hitPointsComponent.hitPoints);
                     }
                 }
             }
