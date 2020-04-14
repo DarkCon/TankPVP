@@ -312,7 +312,7 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
 
 #region Network handle
     private static void SyncGameStartTimer(float time) {
-        if (NetworkHelper.CanUseMasterLogic()) {
+        if (PhotonNetwork.IsMasterClient) {
             var props = new Hashtable {
                 {GAME_START_TIMER, time}
             };
