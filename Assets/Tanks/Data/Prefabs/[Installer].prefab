@@ -49,6 +49,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a1cc86acb3b6d9fac85775959fea98fa, type: 2}
   updateSystems:
   - enabled: 1
+    system: {fileID: 11400000, guid: 190a981e69abf1d16ba9f72645108e3b, type: 2}
+  - enabled: 1
     system: {fileID: 11400000, guid: 7721fde3c3305ae6a8993e62c0a5264e, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: 52346d1178ba6dafcb376f55f37b4aa0, type: 2}

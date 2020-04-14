@@ -54,11 +54,10 @@ public sealed class ProjectileHitSystem : UpdateSystem {
                     isFriendlyFire = true;
                 } else if (this.canUseMasterLogic) {
                     ref var hitPointsComponent = ref otherEntity.GetComponent<HitPointsComponent>();
-                    hitPointsComponent.hitPoints -= projectileComponent.damage;
+                    hitPointsComponent.hitPoints = Mathf.Max(0, hitPointsComponent.hitPoints - projectileComponent.damage);
+                    NetworkHelper.RaiseMasterEventToOthers(otherEntity, NetworkEvent.SET_HITPOINTS, hitPointsComponent.hitPoints);
                     if (hitPointsComponent.hitPoints <= 0) {
                         otherEntity.SetComponent(new DestroyEventComponent());
-                    } else {
-                        NetworkHelper.RaiseMasterEventToOthers(otherEntity, NetworkEvent.SET_HITPOINTS, hitPointsComponent.hitPoints);
                     }
                 }
             }
