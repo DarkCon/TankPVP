@@ -8,7 +8,7 @@
     "com.unity.textmeshpro": "2.0.1",
     "com.unity.timeline": "1.2.13",
     "com.unity.ugui": "1.0.0",
-    "com.xcrew.morpeh": "2020.4.31",
+    "com.xcrew.morpeh": "https://github.com/X-Crew/Morpeh.git#develop",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -41,13 +41,10 @@
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
   },
-  "scopedRegistries": [
-    {
-      "name": "XCrew",
-      "url": "http://xcrew.dev",
-      "scopes": [
-        "com.xcrew"
-      ]
+  "lock": {
+    "com.xcrew.morpeh": {
+      "revision": "develop",
+      "hash": "e2a31d64760a1f350d736d1d843caa2b0cfe35e9"
     }
-  ]
+  }
 }

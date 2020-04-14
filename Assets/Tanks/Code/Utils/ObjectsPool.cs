@@ -77,9 +77,7 @@ namespace Tanks.Utils {
                 return;
 
             if (this.entityIdToElementCacheInUse.TryGetValue(entity.ID, out var poolElement)) {
-                world.RemoveEntity(entity);
                 this.entityIdToElementCacheInUse.Remove(entity.ID);
-                poolElement.obj.gameObject.SetActive(false);
                 poolElement.obj.transform.SetParent(PoolTransform, false);
                 poolElement.isInUse = false;
             } else {
@@ -88,30 +86,27 @@ namespace Tanks.Utils {
         } 
 
         private IEntity TakeLocal(string name, Vector3 position, bool setPosition) {
-            PoolElement poolElement = null;  
-            //TODO: реализация пула через disable/enable из-за того что далеко не всегда EntityProvider.OnEnable выполняется сразу
-            //также непонятная ситуация с тем, что часто тераются сылки в компонентах на unity компоненты после disable/enable
-            /*if (this.objects.TryGetValue(name, out var objsList)) {
-                poolElement = objsList.FirstOrDefault(o => !o.isInUse);*/
+            PoolElement poolElement = null;
+            if (this.objects.TryGetValue(name, out var objsList)) {
+                poolElement = objsList.FirstOrDefault(o => !o.isInUse);
                 if (poolElement == null && this.prefabs.TryGetValue(name, out var prefab)) {
                     poolElement = new PoolElement {obj = Object.Instantiate(prefab)};   
-                    //objsList.Add(poolElement);
+                    objsList.Add(poolElement);
                 }
-            /*}*/
+            }
 
             if (poolElement == null)
                 return null;
 
             poolElement.isInUse = true;
             poolElement.obj.transform.SetParent(null, false);
-            poolElement.obj.gameObject.SetActive(true);
             EntityHelper.PrepareNewEntity(poolElement.obj);
             if (setPosition) {
                 SafeSetPosition(poolElement.obj, position);
             }
 
             var entity = poolElement.obj.Entity;
-            //this.entityIdToElementCacheInUse[entity.ID] = poolElement; 
+            this.entityIdToElementCacheInUse[entity.ID] = poolElement; 
             return entity;
         }
 
