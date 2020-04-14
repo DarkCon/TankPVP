@@ -26,7 +26,8 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
     
     private enum GameStage {
         WAIT_ALL_PLAYERS,
-        GAME_START_TIMER,
+        INIT_START_TIMER,
+        START_TIMER,
         GAME,
         GAME_OVER
     }
@@ -78,15 +79,18 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
             case GameStage.WAIT_ALL_PLAYERS:
                 if (CheckAllPlayerLoadedLevel()) {
                     InitUnits();
-                    if (InitStartTimer()) {
-                        FreezeControl();
-                        stage = GameStage.GAME_START_TIMER;
-                    } else {
-                        stage = GameStage.GAME;
-                    }
+                    ++stage;
                 }
                 break;
-            case GameStage.GAME_START_TIMER:
+            case GameStage.INIT_START_TIMER:
+                if (InitStartTimer()) {
+                    FreezeControl();
+                    stage = GameStage.START_TIMER;
+                } else {
+                    stage = GameStage.GAME;
+                }
+                break;
+            case GameStage.START_TIMER:
                 if (!UpdateTimer()) {
                     UnFreezeControl();
                     ++stage;
@@ -196,12 +200,7 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
         }
 
         if (PhotonNetwork.IsConnected) {
-            if (NetworkHelper.CanUseMasterLogic()) {
-                var props = new Hashtable {
-                    {GAME_START_TIMER, (float) PhotonNetwork.Time}
-                };
-                PhotonNetwork.CurrentRoom.SetCustomProperties(props);
-            }
+            SyncGameStartTimer((float) PhotonNetwork.Time);
         } else {
             this.startTimerEntity.GetComponent<GameObjectComponent>().obj.SetActive(false);
             return false;
@@ -300,6 +299,7 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
             }
             uiGameOverComponent.imgWinner.sprite = sprite;
         }
+        SyncGameStartTimer(-1f);
         SetLoadedLevel(false);
         
         uiGameOverComponent.btnNext.onClick.AddListener(OnBtnNext);
@@ -311,6 +311,15 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
 #endregion
 
 #region Network handle
+    private static void SyncGameStartTimer(float time) {
+        if (NetworkHelper.CanUseMasterLogic()) {
+            var props = new Hashtable {
+                {GAME_START_TIMER, time}
+            };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+        }
+    }
+    
     private static void SetLoadedLevel(bool loaded) {
         var props = new Hashtable {
             {TanksGame.PLAYER_LOADED_LEVEL, loaded}
