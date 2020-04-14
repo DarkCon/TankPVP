@@ -233,6 +233,8 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
 #region Game handle
     private bool CheckGameOver(out int teamWinner) {
         teamWinner = -1;
+        if (playersInfo.Length < 2)
+            return false;
         
         if (IsHasAlive(this.filterBases, out var teamAlive, out var onlyOne)) {
             if (onlyOne) {
