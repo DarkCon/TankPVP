@@ -33,6 +33,7 @@ public sealed class NetworkViewProvider : MonoProvider<NetworkViewComponent>, IP
         if (stream.IsWriting) {
             if (sync.Position) {
                 stream.SendNext(entity.GetComponent<PositionComponent>().position);
+                stream.SendNext((float) PhotonNetwork.Time);
             }
             if (sync.Direction) {
                 stream.SendNext((int)entity.GetComponent<DirectionComponent>().direction);
@@ -48,7 +49,10 @@ public sealed class NetworkViewProvider : MonoProvider<NetworkViewComponent>, IP
             }
         } else {
             if (sync.Position) {
-                entity.SetComponent(new PositionComponent {position = (Vector3) stream.ReceiveNext()});
+                entity.SetComponent(new PositionSyncComponent {
+                    position = (Vector3) stream.ReceiveNext(),
+                    time = (float) stream.ReceiveNext()
+                });
             }
             if (sync.Direction) {
                 entity.SetComponent(new  DirectionComponent { direction = (Direction) stream.ReceiveNext()});

@@ -53,6 +53,8 @@ MonoBehaviour:
   - enabled: 1
     system: {fileID: 11400000, guid: 7721fde3c3305ae6a8993e62c0a5264e, type: 2}
   - enabled: 1
+    system: {fileID: 11400000, guid: 64c09223a2bac1f3a9f52cd85fd95452, type: 2}
+  - enabled: 1
     system: {fileID: 11400000, guid: 52346d1178ba6dafcb376f55f37b4aa0, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: 263764016175b5c469143bc968a69548, type: 2}
