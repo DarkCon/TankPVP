@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d0087e510a15c1f08dd629c87a3dd9f, type: 3}
   m_Name: ObjectsPoolInitializer
   m_EditorClassIdentifier: 
+  UsePool: 1
   prefabs:
   - {fileID: 7066960216761579714, guid: 60a3a6e1c9fc62421b9705668b81e4e8, type: 3}
   - {fileID: 3931348827167908344, guid: f0163d11bde2a735785eb187166f91c4, type: 3}
