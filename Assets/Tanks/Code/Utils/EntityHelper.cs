@@ -38,5 +38,11 @@ namespace Tanks.Utils {
             }
             world.RemoveEntity(entity);
         }
+
+        public static IEntity FindEntityIn(Component unityComponent) {
+            var provider = unityComponent.GetComponent<EntityProvider>() ??
+                           unityComponent.transform.GetComponentInParent<EntityProvider>();
+            return provider != null ? provider.Entity : null;
+        }
     }
 }

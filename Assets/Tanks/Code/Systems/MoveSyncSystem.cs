@@ -26,7 +26,7 @@ public sealed class MoveSyncSystem : UpdateSystem {
             var extrapolatePos = posSyncComponent.position;
             if (entity.Has<MoveComponent>()) {
                 ref var moveComponent = ref entity.GetComponent<MoveComponent>();
-                var moveVector = DirectionVector.Get(moveComponent.direction);
+                var moveVector = DirectionUtils.GetVector(moveComponent.direction);
                 var time = (float) PhotonNetwork.Time - posSyncComponent.time;
                 extrapolatePos += moveComponent.speed * time * moveVector;
             }

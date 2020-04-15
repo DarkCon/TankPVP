@@ -12,3 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e8d7e5393ba844faa2ca2a24296519, type: 3}
   m_Name: GameManagerSystemObj
   m_EditorClassIdentifier: 
+  botSprites:
+  - {fileID: -633776839387804688, guid: 1a80c7b8460eeb99bae45b8d06034bdc, type: 3}
+  - {fileID: -5800861129757255216, guid: 1a80c7b8460eeb99bae45b8d06034bdc, type: 3}
+  - {fileID: -2015901961681485058, guid: 1a80c7b8460eeb99bae45b8d06034bdc, type: 3}
+  - {fileID: -5003441805911773482, guid: 1a80c7b8460eeb99bae45b8d06034bdc, type: 3}
+  - {fileID: -3206531110674126801, guid: 1a80c7b8460eeb99bae45b8d06034bdc, type: 3}
+  - {fileID: -2072038468702977127, guid: 1a80c7b8460eeb99bae45b8d06034bdc, type: 3}
+  - {fileID: 2909458258800530498, guid: 1a80c7b8460eeb99bae45b8d06034bdc, type: 3}

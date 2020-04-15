@@ -63,7 +63,7 @@ public sealed class FireCooldownSystem : UpdateSystem {
     }
 
     private static void MakeFireEvent(IEntity entity, Vector3 position, Direction direction) {
-        var dirVector = DirectionVector.Get(direction);
+        var dirVector = DirectionUtils.GetVector(direction);
         position += PhysicsHelper.GetPointOnObstacleEdgeOffset(entity, dirVector);
         entity.SetComponent(new FireEventComponent {
             position = position,

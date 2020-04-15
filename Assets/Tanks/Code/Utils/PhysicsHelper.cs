@@ -1,4 +1,5 @@
 using Morpeh;
+using Tanks.Constants;
 using UnityEngine;
 
 namespace Tanks.Utils {
@@ -87,6 +88,15 @@ namespace Tanks.Utils {
             var size = obstacleComponent.collider.size * 0.5f;
             var offset = MathHelper.ProjectSize(size, dirVector);
             return offset;
+        }
+
+        public static Direction GetDirectionToCollider(Collider2D collider, Vector2 fromPosition, Direction moveDir) {
+            var posOnEdge = collider.ClosestPoint(fromPosition);
+            var dirToCollider = DirectionUtils.GetDirection(posOnEdge - fromPosition);
+            if (!DirectionUtils.IsClose(dirToCollider, moveDir))
+                dirToCollider = moveDir;
+            
+            return dirToCollider;
         }
     }
 }

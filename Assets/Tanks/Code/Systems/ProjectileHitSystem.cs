@@ -8,7 +8,7 @@ using Unity.IL2CPP.CompilerServices;
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(ProjectileHitSystem))]
-public sealed class ProjectileHitSystem : UpdateSystem {
+public sealed class ProjectileHitSystem : FixedUpdateSystem {
     private Filter filter;
     private bool canUseMasterLogic;
     

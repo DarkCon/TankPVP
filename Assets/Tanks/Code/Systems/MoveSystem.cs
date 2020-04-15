@@ -30,10 +30,14 @@ public sealed class MoveSystem : UpdateSystem {
 
         for (int i = 0, length = this.filterPos.Length; i < length; ++i) {
             ref var moveComponent = ref moveBag.GetComponent(i);
-            ref var posComponent = ref posBag.GetComponent(i);
             var entity = filterPos.GetEntity(i);
+            if (entity.Has<HitEventComponent>() &&
+                entity.GetComponent<HitEventComponent>().direction == moveComponent.direction) {
+                continue;
+            }
 
-            var moveVector = DirectionVector.Get(moveComponent.direction);
+            ref var posComponent = ref posBag.GetComponent(i);
+            var moveVector = DirectionUtils.GetVector(moveComponent.direction);
             var distance = moveComponent.speed * deltaTime;
             
             posComponent.position += distance * moveVector;

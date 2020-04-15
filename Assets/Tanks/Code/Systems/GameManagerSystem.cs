@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon;
 using Morpeh;
@@ -16,12 +17,16 @@ using UnityEngine.SceneManagement;
 [Il2CppSetOption(Option.DivideByZeroChecks, false)]
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(GameManagerSystem))]
 public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
+    public Sprite[] botSprites;
+
     private const string GAME_START_TIMER = "GameStartTimer";
     
     private struct PlayerInitInfo {
         public string tankSprite;
         public bool isLocal;
         public string name;
+        public bool onlyPlayer;
+        public bool onlyBots;
     }
     
     private enum GameStage {
@@ -109,22 +114,25 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
 #region Init Units
     private void InitUnits() {
         var network = PhotonNetwork.IsConnected;
-        if (network) {
+        
+        if (network && PhotonNetwork.PlayerList.Length > 1) {
             this.playersInfo = PhotonNetwork.PlayerList.Select(player => new PlayerInitInfo {
                 isLocal = player.IsLocal,
                 name = player.NickName,
                 tankSprite = (string) player.CustomProperties[TanksGame.PLAYER_TANK_SPRITE]
             }).ToArray();
+            SpawnTanks(network, this.playersInfo);
         } else {
-            this.playersInfo = new[] {new PlayerInitInfo {
-                isLocal = true
-            }};
+            this.playersInfo = new[] {new PlayerInitInfo {isLocal = true, onlyPlayer = true}};
+            var playerWithBot = new List<PlayerInitInfo>(this.playersInfo);
+            playerWithBot.Add(new PlayerInitInfo {isLocal = true, onlyBots = true});
+            SpawnTanks(network, playerWithBot);
         }
-        SpawnTanks(network, this.playersInfo);
+        
         RemoveExtraBases(this.playersInfo);
     }
     
-    private void SpawnTanks(bool networkSpawn, PlayerInitInfo[] players) {
+    private void SpawnTanks(bool networkSpawn, IReadOnlyList<PlayerInitInfo> players) {
         var filterSpawns = this.World.Filter
             .With<SpawnComponent>()
             .With<PositionComponent>()
@@ -138,17 +146,24 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
             ref var posComponent = ref posBag.GetComponent(i);
             ref var dirComponent = ref dirBag.GetComponent(i);
 
-            if (spawnComponent.team < players.Length) {
+            if (spawnComponent.team < players.Count) {
                 var player = players[spawnComponent.team];
-                if (networkSpawn && !player.isLocal) {
+                var isPlayer = !player.onlyBots && spawnComponent.isPlayer;
+
+                if (networkSpawn && !player.isLocal || player.onlyPlayer && !isPlayer) {
                     continue;
                 }
+
                 
-                var tankEntity = ObjectsPool.Main.Take("Tank", posComponent.position, networkSpawn);
-                
-                ref var spriteComponent = ref tankEntity.GetComponent<SpriteComponent>();
-                spriteComponent.spriteDecoder.OverrideBaseSpriteByName(player.tankSprite);
-                NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.CHANGE_SPRITE, player.tankSprite);
+                var tankPrefabName = isPlayer ? "Tank" : "TankBot";
+                var tankEntity = ObjectsPool.Main.Take(tankPrefabName, posComponent.position, networkSpawn);
+
+                if (!player.onlyBots) {
+                    ref var spriteComponent = ref tankEntity.GetComponent<SpriteComponent>();
+                    var tankSprite = isPlayer ? player.tankSprite : this.botSprites[spawnComponent.team].name;
+                    spriteComponent.spriteDecoder.OverrideBaseSpriteByName(tankSprite);
+                    NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.CHANGE_SPRITE, tankSprite);
+                }
 
                 tankEntity.SetComponent(dirComponent);
                 
@@ -159,8 +174,10 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
                 
                 if (player.isLocal) {
                     tankEntity.SetComponent(new LocalControlComponent());
-                    if (spawnComponent.isPlayer) {
+                    if (isPlayer) {
                         tankEntity.AddComponent<PlayerControlMarker>();
+                    } else {
+                        tankEntity.AddComponent<BotComponent>();
                     }
                 }
             }
@@ -233,10 +250,17 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
 #region Game handle
     private bool CheckGameOver(out int teamWinner) {
         teamWinner = -1;
-        if (playersInfo.Length < 2)
-            return false;
         
-        if (IsHasAlive(this.filterBases, out var teamAlive, out var onlyOne)) {
+        if (IsHasAlive(this.filterBases, out var teamAlive, out var onlyOne, true)) {
+            if (onlyOne && this.playersInfo.Length > 1) {
+                teamWinner = teamAlive;
+                return true;
+            }
+        } else {
+            return true;
+        }
+
+        if (IsHasAlive(this.filterTanks, out teamAlive, out onlyOne, false)) {
             if (onlyOne) {
                 teamWinner = teamAlive;
                 return true;
@@ -245,14 +269,10 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
             return true;
         }
 
-        if (!IsHasAlive(this.filterTanks, out teamAlive, out onlyOne)) {
-            return true;
-        }
-
         return false;
     }
 
-    private bool IsHasAlive(Filter filter, out int teamAlive, out bool onlyOne) {
+    private static bool IsHasAlive(Filter filter, out int teamAlive, out bool onlyOne, bool checkHitPoints) {
         var hasAlive = false;
         onlyOne = false;
         teamAlive = -1;
@@ -261,11 +281,12 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
         var hitPointBag = filter.Select<HitPointsComponent>();
         for (int i = 0, length = filter.Length; i < length; ++i) {
             ref var hitPointComponent = ref hitPointBag.GetComponent(i);
-            if (hitPointComponent.hitPoints > 0) {
+            if (!checkHitPoints || hitPointComponent.hitPoints > 0) {
                 hasAlive = true;
-                if (teamAlive < 0) {
+                var team = teamBag.GetComponent(i).team;
+                if (teamAlive < 0 || team == teamAlive) {
+                    teamAlive = team;
                     onlyOne = true;
-                    teamAlive = teamBag.GetComponent(i).team;
                 } else {
                     onlyOne = false;
                     break;
@@ -281,7 +302,7 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
         
         ref var uiGameOverComponent = ref gameOverProvider.Entity.GetComponent<UIGameOverComponent>();
 
-        var hasWinner = teamWinner >= 0;
+        var hasWinner = teamWinner >= 0 && teamWinner < this.playersInfo.Length;
 
         uiGameOverComponent.gameOverPnl.SetActive(!hasWinner);
         uiGameOverComponent.winnerPnl.SetActive(hasWinner);

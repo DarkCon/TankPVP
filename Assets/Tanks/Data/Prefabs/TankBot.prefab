@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 8391748265038162963}
   - component: {fileID: 2412346025550697219}
   m_Layer: 0
-  m_Name: Tank
+  m_Name: TankBot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 1448099771
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5800861129757255216, guid: 1a80c7b8460eeb99bae45b8d06034bdc,
+  m_Sprite: {fileID: 2909458258800530498, guid: 1a80c7b8460eeb99bae45b8d06034bdc,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    hitPoints: 3
+    hitPoints: 2
 --- !u!114 &8456543665310109255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,9 +122,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    speed: 2
+    speed: 2.5
     fireCooldown: 1
-    maxHitPoints: 3
+    maxHitPoints: 2
     invulnerabilityTime: 3
     projectile:
       ownerEntityId: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    lifeCount: 3
+    lifeCount: 4
 --- !u!114 &3960695699035995329
 MonoBehaviour:
   m_ObjectHideFlags: 0
