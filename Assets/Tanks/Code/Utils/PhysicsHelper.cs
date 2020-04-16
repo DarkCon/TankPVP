@@ -4,46 +4,52 @@ using UnityEngine;
 
 namespace Tanks.Utils {
     public static class PhysicsHelper {
-        public struct Overlap2D {
+        public delegate bool OverlapFilter(Collider2D collider, Collider2D other);
+        public struct Collision {
             public Collider2D other;
             public ColliderDistance2D distance;
+            public Direction direction;
         }
         
         private static RaycastHit2D[] raycastResultCache = new RaycastHit2D[1];
-        private static Collider2D[] collidersResutlCache = new Collider2D[4];
+        private static Collider2D[] collidersResutlCache = new Collider2D[5];
 
-        public static bool GetOverlapForward(ObstacleComponent obstacleComponent, Vector3 dirVector, out Overlap2D overlap) {
-            var contactFilter = CreateContactFilterForward(dirVector);
+        public static bool GetCollision(ObstacleComponent obstacleComponent, Direction dir, float extend,
+            out Collision collision, OverlapFilter filter = null) 
+        {
+            var dirVector = DirectionUtils.GetVector(dir);
+            var contactFilter = new ContactFilter2D();
 
-            var collider = obstacleComponent.collider; 
-            var count = collider.OverlapCollider(contactFilter, collidersResutlCache);
+            var collider = obstacleComponent.collider;
+            var pos = collider.transform.position;
+            var size = collider.size + (Vector2)dirVector * extend;
+            
+            var count = Physics2D.OverlapBox(pos, size, 0f, contactFilter, collidersResutlCache);
             if (count > 0) {
-                overlap = new Overlap2D{
-                    other = collidersResutlCache[0],
-                    distance =  obstacleComponent.collider.Distance(collidersResutlCache[0])
-                };
-                var minDistanceToB = Vector3.Distance(overlap.distance.pointB, collider.transform.position);
-                for (int i = 1; i < count; ++i) {
-                    var dist = obstacleComponent.collider.Distance(collidersResutlCache[i]);
-                    var distToB = Vector3.Distance(dist.pointB, collider.transform.position);  
-                    if (distToB < minDistanceToB) {
-                        overlap.distance = dist;
-                        overlap.other = collidersResutlCache[i];
-                        minDistanceToB = distToB;
+                collision = new Collision();
+                for (int i = 0; i < count; ++i) {
+                    var otherCollider = collidersResutlCache[i];
+                    if (otherCollider != collider && (filter == null || filter(collider, otherCollider))) {
+                        var dist = collider.Distance(otherCollider);
+                        if (dist.isValid) {
+                            var dirToCollider = GetDirectionToCollider(otherCollider, pos, dir);
+                            if (!DirectionUtils.IsOpposite(dir, dirToCollider)
+                            && collision.other == null || dist.distance < collision.distance.distance) {
+                                collision.other = otherCollider;
+                                collision.distance = dist;
+                                collision.direction = dirToCollider;
+                            }
+                        }
                     }
                 }
 
-                var rect = new Rect {
-                    size = collider.size * 1.1f,
-                    center = collider.transform.position,
-                };
-                if (!rect.Contains(overlap.distance.pointA)) //collider not updated;
+                if (collision.other == null)
                     return false;
 
                 return true;
             }
 
-            overlap = default;
+            collision = default;
             return false;
         }
         
@@ -93,8 +99,8 @@ namespace Tanks.Utils {
         public static Direction GetDirectionToCollider(Collider2D collider, Vector2 fromPosition, Direction moveDir) {
             var posOnEdge = collider.ClosestPoint(fromPosition);
             var dirToCollider = DirectionUtils.GetDirection(posOnEdge - fromPosition);
-            if (!DirectionUtils.IsClose(dirToCollider, moveDir))
-                dirToCollider = moveDir;
+            if (dirToCollider == Direction.NONE)
+                return moveDir;
             
             return dirToCollider;
         }

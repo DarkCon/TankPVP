@@ -59,6 +59,8 @@ MonoBehaviour:
   - enabled: 1
     system: {fileID: 11400000, guid: 263764016175b5c469143bc968a69548, type: 2}
   - enabled: 1
+    system: {fileID: 11400000, guid: 85e0c3fffbf459063b30e691177fb8c9, type: 2}
+  - enabled: 1
     system: {fileID: 11400000, guid: 1de1205513baaf4f181664a17aab5a5a, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: ed2c3a08114ad21018cd96638b5776b3, type: 2}
@@ -79,8 +81,6 @@ MonoBehaviour:
   fixedUpdateSystems:
   - enabled: 1
     system: {fileID: 11400000, guid: cdd684c67b2fc54088560dd96ed6a342, type: 2}
-  - enabled: 1
-    system: {fileID: 11400000, guid: 85e0c3fffbf459063b30e691177fb8c9, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: 7ad4c9808290fb499bc44b577f4daf23, type: 2}
   lateUpdateSystems: []

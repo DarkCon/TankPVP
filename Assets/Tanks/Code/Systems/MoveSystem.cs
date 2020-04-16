@@ -3,6 +3,7 @@ using Tanks.Constants;
 using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
+using UnityEngine.UI;
 
 [Il2CppSetOption(Option.NullChecks, false)]
 [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
@@ -30,13 +31,22 @@ public sealed class MoveSystem : UpdateSystem {
 
         for (int i = 0, length = this.filterPos.Length; i < length; ++i) {
             ref var moveComponent = ref moveBag.GetComponent(i);
+            ref var posComponent = ref posBag.GetComponent(i);
             var entity = filterPos.GetEntity(i);
-            if (entity.Has<HitEventComponent>() &&
-                entity.GetComponent<HitEventComponent>().direction == moveComponent.direction) {
-                continue;
+
+            if (entity.Has<CollisionEventComponent>()) {
+                ref var collisionComponent = ref entity.GetComponent<CollisionEventComponent>();
+                ref var otherMove = ref collisionComponent.otherEntity.GetComponent<MoveComponent>(out var otherMoveExist); 
+                if (collisionComponent.extrude >= 0f 
+                    && (!otherMoveExist || DirectionUtils.IsOpposite(otherMove.direction, moveComponent.direction))) {
+                    var extrude = Mathf.Min(collisionComponent.extrude, moveComponent.speed * deltaTime);
+                    posComponent.position -= (Vector3) collisionComponent.contact.distance.normal * extrude;
+                    collisionComponent.extrude -= extrude;
+                }
+                if (collisionComponent.contact.direction == moveComponent.direction)
+                    continue;
             }
 
-            ref var posComponent = ref posBag.GetComponent(i);
             var moveVector = DirectionUtils.GetVector(moveComponent.direction);
             var distance = moveComponent.speed * deltaTime;
             

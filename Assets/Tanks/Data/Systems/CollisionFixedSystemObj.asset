@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb8bb7a78861ee57a4421a370ceee6b, type: 3}
   m_Name: CollisionFixedSystemObj
   m_EditorClassIdentifier: 
+  maxActualCollisionDist: 0.05

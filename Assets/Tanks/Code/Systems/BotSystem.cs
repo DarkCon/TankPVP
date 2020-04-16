@@ -156,12 +156,12 @@ public sealed class BotSystem : FixedUpdateSystem {
 
     private BarrierInfo DetectBarrier(IEntity entity, int team, Vector3 pos, Direction dir) {
         var info = new BarrierInfo();
-        if (entity.Has<HitEventComponent>()) {
-            ref var hitEventComponent = ref entity.GetComponent<HitEventComponent>();
-            if (hitEventComponent.direction == dir) {
+        if (entity.Has<CollisionEventComponent>()) {
+            ref var collisionComponent = ref entity.GetComponent<CollisionEventComponent>();
+            if (collisionComponent.contact.direction == dir) {
                 info.hasBarrier = true;
-                info.isDestroyable = IsOnFireLine(hitEventComponent.overlap.other, pos, dir)
-                                     && IsCanDestroy(hitEventComponent.otherEntity, team);
+                info.isDestroyable = IsOnFireLine(collisionComponent.contact.other, pos, dir)
+                                     && IsCanDestroy(collisionComponent.otherEntity, team);
 
                 if (info.hasBarrier && info.isDestroyable) {
                     entity.RemoveComponent<MoveComponent>();

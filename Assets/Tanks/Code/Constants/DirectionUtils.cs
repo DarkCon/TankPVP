@@ -20,6 +20,9 @@ namespace Tanks.Constants {
         }
         
         public static Direction GetDirection(Vector2 vector) {
+            if (vector == Vector2.zero)
+                return Direction.NONE;
+            
             if (Mathf.Abs(vector.x) > Mathf.Abs(vector.y)) {
                 if (vector.x < 0f)
                     return Direction.LEFT;
@@ -44,6 +47,10 @@ namespace Tanks.Constants {
                 default:
                     return Direction.NONE;
             }
+        }
+        
+        public static bool IsOpposite(Direction d1, Direction d2) {
+            return d1 == GetOpposite(d2);
         }
 
         public static bool IsClose(Direction d1, Direction d2) {
