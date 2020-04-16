@@ -47,7 +47,7 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
     private Filter filterLocalControlFreezed;
     private Filter filterLocalControlFree;
     private Filter filterTanks;
-    private Filter filterBases;
+    private Filter filterBases; 
 
     public override void OnAwake() {
         PhotonNetwork.AddCallbackTarget(this);
@@ -118,12 +118,17 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
 #region Init Units
     private void InitUnits() {
         var network = PhotonNetwork.IsConnected;
+        var enableBots = true;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(TanksGame.ENABLE_BOTS, out var enable)) {
+            enableBots = (bool) enable;
+        }
         
         if (network) {
             this.playersInfo = PhotonNetwork.PlayerList.Select(player => new PlayerInitInfo {
                 isLocal = player.IsLocal,
                 name = player.NickName,
-                tankSprite = (string) player.CustomProperties[TanksGame.PLAYER_TANK_SPRITE]
+                tankSprite = (string) player.CustomProperties[TanksGame.PLAYER_TANK_SPRITE],
+                onlyPlayer = !enableBots
             }).ToArray();
         } else {
             this.playersInfo = new[] {new PlayerInitInfo {isLocal = true}};

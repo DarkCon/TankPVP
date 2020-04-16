@@ -29,6 +29,7 @@ namespace Lobby {
         [Header("Inside Room Panel")] public GameObject InsideRoomPanel;
 
         public Button StartGameButton;
+        public Toggle TglEnableBots;
         public GameObject PlayerListEntryPrefab;
 
         private Dictionary<string, RoomInfo> cachedRoomList;
@@ -44,6 +45,8 @@ namespace Lobby {
             roomListEntries = new Dictionary<string, GameObject>();
 
             PlayerNameInput.text = "Player " + Random.Range(1000, 10000);
+            
+            this.TglEnableBots.onValueChanged.AddListener(OnTglEnableBots);
         }
 
 #endregion
@@ -105,6 +108,8 @@ namespace Lobby {
             }
 
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
+            UpdateTglEnableBots();
+            EnableBots(this.TglEnableBots.isOn);
 
             Hashtable props = new Hashtable {
                 {TanksGame.PLAYER_LOADED_LEVEL, false}
@@ -132,6 +137,7 @@ namespace Lobby {
             playerListEntries.Add(newPlayer.ActorNumber, entry);
 
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
+            UpdateTglEnableBots();
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer) {
@@ -139,12 +145,15 @@ namespace Lobby {
             playerListEntries.Remove(otherPlayer.ActorNumber);
 
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
+            UpdateTglEnableBots();
         }
 
         public override void OnMasterClientSwitched(Player newMasterClient) {
             if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber) {
                 StartGameButton.gameObject.SetActive(CheckPlayersReady());
             }
+
+            UpdateTglEnableBots();
         }
 
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps) {
@@ -243,6 +252,38 @@ namespace Lobby {
             }
 
             return true;
+        }
+
+        private void UpdateTglEnableBots() {
+            var enable = PhotonNetwork.IsMasterClient && PhotonNetwork.PlayerList.Length > 1;
+            this.TglEnableBots.interactable = enable;
+            
+            if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(TanksGame.ENABLE_BOTS, out var enableBots)) {
+                this.TglEnableBots.SetIsOnWithoutNotify((bool) enableBots);
+            }
+            if (PhotonNetwork.PlayerList.Length < 2 && !this.TglEnableBots.isOn) {
+                this.TglEnableBots.isOn = true;
+            }
+        }
+
+        public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged) {
+            base.OnRoomPropertiesUpdate(propertiesThatChanged);
+            if (propertiesThatChanged.TryGetValue(TanksGame.ENABLE_BOTS, out var enableBots)) {
+                this.TglEnableBots.SetIsOnWithoutNotify((bool) enableBots);
+            }
+        }
+
+        private static void OnTglEnableBots(bool enable) {
+            EnableBots(enable);
+        }
+
+        private static void EnableBots(bool enable) {
+            if (PhotonNetwork.IsMasterClient) {
+                var props = new Hashtable {
+                    {TanksGame.ENABLE_BOTS, enable}
+                };
+                PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+            }
         }
 
         private void ClearRoomListView() {
