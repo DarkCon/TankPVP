@@ -1,7 +1,16 @@
 # Tanks PVP
-Simple game for researching ECS in Unity with multiplayer for maximum 4 players.
+Simple 2D game (Battle City like) for researching ECS in Unity with multiplayer.
 
 This is my first work with ECS, so the use of this project as an example is not recommended.
+
+### Game description
+![Screenshot](image.png)
+- `W` `A` `S` `D` - moving
+- `SPACE` - fire
+- Maximum 4 players
+- Multiplayer game target: destroy bases of other players.
+- Singleplayer game target: destroy enemy bots and protect you base.
+- In multiplayer each player has 2 teammate bots (smaller tanks). You can enable/disable bots in lobby.
 
 ### Frameworks
 - [Morpeh](https://github.com/X-Crew/Morpeh) for ECS
