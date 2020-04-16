@@ -34,7 +34,18 @@ namespace Tanks.Utils {
 
         public override void Clean() {
             base.Clean();
+            var inUse = this.entityIdToElementCacheInUse.Keys.ToArray();
             this.objects.Clear();
+            this.entityIdToElementCacheInUse.Clear();
+
+            var world = World.Default;
+            if (world != null) {
+                foreach (var entityId in inUse) {
+                    var entity = world.GetEntity(entityId);
+                    Return(entity, world);
+                }
+            }
+
             if (this._poolTransform != null) {
                 Object.Destroy(this._poolTransform);
                 this._poolTransform = null;
@@ -45,7 +56,7 @@ namespace Tanks.Utils {
             if (entity.IsNullOrDisposed())
                 return;
 
-            CleanNetworkViewIdIfNeed(entity);
+            NetworkDestroyIfNeed(entity);
             if (this.entityIdToElementCacheInUse.TryGetValue(entity.ID, out var poolElement)) {
                 this.entityIdToElementCacheInUse.Remove(entity.ID);
                 poolElement.obj.transform.SetParent(PoolTransform, false);

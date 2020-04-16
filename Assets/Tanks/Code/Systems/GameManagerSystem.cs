@@ -63,7 +63,9 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
             .GetComponent<GameObjectComponent>().obj.GetComponent<UIGameOverProvider>();
         gameOverProvider.gameObject.SetActive(false);
 
-        var filterLocalControl = this.World.Filter.With<LocalControlComponent>();
+        var filterLocalControl = this.World.Filter
+            .With<LocalControlComponent>()
+            .Without<HiddenComponent>();
         this.filterLocalControlFreezed = filterLocalControl.With<FreezeControlMarker>();
         this.filterLocalControlFree = filterLocalControl.Without<FreezeControlMarker>();
 
@@ -127,19 +129,18 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
             this.playersInfo = new[] {new PlayerInitInfo {isLocal = true}};
         }
 
+        RemoveExtraBases(this.playersInfo);
         if (PhotonNetwork.PlayerList.Length < 2) {
             this.playersInfo[0].onlyPlayer = true;
             var playerWithBot = new List<PlayerInitInfo>(this.playersInfo);
             playerWithBot.Add(new PlayerInitInfo {isLocal = true, onlyBots = true});
-            SpawnTanks(network, playerWithBot);
+            ConfigurateSpawns(network, playerWithBot);
         } else {
-            SpawnTanks(network, this.playersInfo);
+            ConfigurateSpawns(network, this.playersInfo);
         }
-        
-        RemoveExtraBases(this.playersInfo);
     }
     
-    private void SpawnTanks(bool networkSpawn, IReadOnlyList<PlayerInitInfo> players) {
+    private void ConfigurateSpawns(bool networkSpawn, IReadOnlyList<PlayerInitInfo> players) {
         var filterSpawns = this.World.Filter
             .With<SpawnComponent>()
             .With<PositionComponent>()
@@ -152,6 +153,7 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
             ref var spawnComponent = ref spawnBag.GetComponent(i);
             ref var posComponent = ref posBag.GetComponent(i);
             ref var dirComponent = ref dirBag.GetComponent(i);
+            var spawnEntity = filterSpawns.GetEntity(i); 
 
             if (spawnComponent.team < players.Count) {
                 var player = players[spawnComponent.team];
@@ -161,34 +163,49 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
                     continue;
                 }
 
-                
                 var tankPrefabName = isPlayer ? "Tank" : "TankBot";
-                var tankEntity = ObjectsPool.Main.Take(tankPrefabName, posComponent.position, networkSpawn);
-
+                string overrideTankSprite = null;
                 if (!player.onlyBots) {
-                    ref var spriteComponent = ref tankEntity.GetComponent<SpriteComponent>();
-                    var tankSprite = isPlayer ? player.tankSprite : this.botSprites[spawnComponent.team].name;
-                    spriteComponent.spriteDecoder.OverrideBaseSpriteByName(tankSprite);
-                    NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.CHANGE_SPRITE, tankSprite);
+                    overrideTankSprite = isPlayer ? player.tankSprite : this.botSprites[spawnComponent.team].name;
                 }
-
-                tankEntity.SetComponent(dirComponent);
+                SpawnTank(networkSpawn, tankPrefabName, overrideTankSprite,
+                    posComponent.position, dirComponent.direction, spawnComponent.team,
+                    isPlayer, !isPlayer
+                );
                 
-                tankEntity.SetComponent(new TeamComponent {
-                    team = spawnComponent.team
-                });
-                NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.SET_TEAM, spawnComponent.team);
-                
-                if (player.isLocal) {
-                    tankEntity.SetComponent(new LocalControlComponent());
-                    tankEntity.AddComponent<FreezeControlMarker>();
-                    if (isPlayer) {
-                        tankEntity.AddComponent<PlayerControlMarker>();
-                    } else {
-                        tankEntity.AddComponent<BotComponent>();
-                    }
-                }
+                spawnEntity.AddComponent<LocalControlComponent>();
+                spawnEntity.AddComponent<FreezeControlMarker>();
             }
+        }
+    }
+
+    private static void SpawnTank(bool networkSpawn, string prefabName, string overrideSprite, 
+        Vector3 pos, Direction dir, int team, bool isPlayer, bool hide) 
+    {
+        if (hide)
+            pos = TanksGame.HIDE_OBJECT_POSITION;
+        var tankEntity = ObjectsPool.Main.Take(prefabName, pos, networkSpawn);
+
+        if (!string.IsNullOrEmpty(overrideSprite)) {
+            ref var spriteComponent = ref tankEntity.GetComponent<SpriteComponent>();
+            spriteComponent.spriteDecoder.OverrideBaseSpriteByName(overrideSprite);
+            NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.CHANGE_SPRITE, overrideSprite);
+        }
+
+        tankEntity.SetComponent(new DirectionComponent {direction = dir});
+                
+        tankEntity.SetComponent(new TeamComponent {team = team});
+        NetworkHelper.RaiseMyEventToOthers(tankEntity, NetworkEvent.SET_TEAM, team);
+
+        tankEntity.AddComponent<LocalControlComponent>();
+        tankEntity.AddComponent<FreezeControlMarker>();
+        if (isPlayer) {
+            tankEntity.AddComponent<PlayerControlMarker>();
+        } else {
+            tankEntity.AddComponent<BotComponent>();
+        }
+        if (hide) {
+            tankEntity.AddComponent<HiddenComponent>();
         }
     }
 

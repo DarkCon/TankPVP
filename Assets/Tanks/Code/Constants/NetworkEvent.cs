@@ -4,6 +4,7 @@ namespace Tanks.Constants {
         CHANGE_SPRITE,
         SET_TEAM,
         SET_HITPOINTS,
+        SET_INVULNERABILITY,
         FIRE,
         TANK_KILLED,
         DESTROY,

@@ -27,8 +27,10 @@ public sealed class ObjectsPoolInitializer : Initializer {
     }
 
     public override void Dispose() {
+        //TODO: dispose is not invoked, workaround CleanLevelOnDestroy
         var pool = ObjectsPool.Main;
         PhotonNetwork.RemoveCallbackTarget(pool);
         pool.Clean();
+        base.Dispose();
     }
 }

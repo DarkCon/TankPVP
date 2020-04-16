@@ -1,4 +1,5 @@
 ﻿using Morpeh;
+using Photon.Pun;
 using Tanks.Constants;
 using Tanks.Utils;
 using UnityEngine;
@@ -40,6 +41,9 @@ public sealed class DestroySystem : UpdateSystem {
             
             var entity = this.filterKilledBases.GetEntity(i);
             entity.RemoveComponent<DestroyEventComponent>();
+            
+            if (PhotonNetwork.IsMasterClient)
+                NetworkHelper.RaiseMasterEventToOthers(entity, NetworkEvent.DESTROY);
         }
     }
 }

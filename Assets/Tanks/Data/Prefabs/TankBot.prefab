@@ -125,7 +125,7 @@ MonoBehaviour:
     speed: 2.5
     fireCooldown: 1
     maxHitPoints: 2
-    invulnerabilityTime: 3
+    invulnerabilityTime: 2
     projectile:
       ownerEntityId: 0
       team: 0

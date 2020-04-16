@@ -36,10 +36,7 @@ public sealed class TankKilledSystem : UpdateSystem {
             ObjectsPool.Main.Take("TankBang", killedComponent.position);
 
             if (lifeComponent.lifeCount > 0) {
-                entity.SetComponent(new PositionComponent {position = killedComponent.respawnPosition});
-                entity.SetComponent(new HitPointsComponent {hitPoints = tankComponent.maxHitPoints});
-                entity.SetComponent(new DirectionComponent {direction = killedComponent.respawnDirection});
-                entity.SetComponent(new InvulnerabilityComponent {time = tankComponent.invulnerabilityTime});
+                entity.SetComponent(new HiddenComponent());
             } else {
                 entity.SetComponent(new DestroyEventComponent());
             }

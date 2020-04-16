@@ -17,11 +17,17 @@ namespace Tanks.Utils {
         public static bool GetCollision(ObstacleComponent obstacleComponent, Direction dir, float extend,
             out Collision collision, OverlapFilter filter = null) 
         {
+            var pos = obstacleComponent.collider.transform.position;
+            return GetCollision(obstacleComponent, pos, dir, extend, out collision, filter);
+        }
+
+        public static bool GetCollision(ObstacleComponent obstacleComponent, Vector3 pos, Direction dir, float extend,
+            out Collision collision, OverlapFilter filter = null) 
+        {
             var dirVector = DirectionUtils.GetVector(dir);
             var contactFilter = new ContactFilter2D();
 
             var collider = obstacleComponent.collider;
-            var pos = collider.transform.position;
             var size = collider.size + (Vector2)dirVector * extend;
             
             var count = Physics2D.OverlapBox(pos, size, 0f, contactFilter, collidersResutlCache);

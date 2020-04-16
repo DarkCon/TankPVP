@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5228784459400777809}
   - component: {fileID: 5228784459400777810}
+  - component: {fileID: -1592696633735305728}
   m_Layer: 0
   m_Name: '[Installer]'
   m_TagString: Untagged
@@ -71,6 +72,10 @@ MonoBehaviour:
   - enabled: 1
     system: {fileID: 11400000, guid: a16b3c2033a3ba610b84db73133b23cf, type: 2}
   - enabled: 1
+    system: {fileID: 11400000, guid: 912b552ff6a54252ea7cc165a1ae7e4c, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: f1573420ac8a671bb8c0a497a799b72b, type: 2}
+  - enabled: 1
     system: {fileID: 11400000, guid: 2baa030805892bb9ab68800ff2f2712a, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: 4d15013b7a21125a3b220b12b5052702, type: 2}
@@ -84,3 +89,15 @@ MonoBehaviour:
   - enabled: 1
     system: {fileID: 11400000, guid: 7ad4c9808290fb499bc44b577f4daf23, type: 2}
   lateUpdateSystems: []
+--- !u!114 &-1592696633735305728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5228784459400777811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57052a7a77ca49f684a9fbe65c2e5f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

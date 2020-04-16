@@ -1,4 +1,5 @@
-﻿using ExitGames.Client.Photon;
+﻿using System;
+using ExitGames.Client.Photon;
 using Morpeh;
 using Photon.Pun;
 using Photon.Realtime;
@@ -13,14 +14,12 @@ using Unity.IL2CPP.CompilerServices;
 [CreateAssetMenu(menuName = "ECS/Systems/" + nameof(NetworkSystem))]
 public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
     private Filter filterTankKilled;
-    private Filter filterDestroy;
     private Filter filterFire;
 
     public override void OnAwake() {
         PhotonNetwork.AddCallbackTarget(this);
         
         var filterSync = this.World.Filter.With<NetworkViewComponent>();
-        this.filterDestroy = filterSync.With<DestroyEventComponent>();
         this.filterFire = filterSync.With<FireEventComponent>();
         this.filterTankKilled = filterSync.With<TankKilledEventComponent>();
     }
@@ -34,7 +33,6 @@ public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
         SendFire();
         if (PhotonNetwork.IsMasterClient) {
             SendTankKilled();
-            SendDestroy();
         }
     }
 
@@ -55,16 +53,8 @@ public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
             ref var tankKilledComponent = ref tankKilledBag.GetComponent(i);
             NetworkHelper.RaiseMasterEventToOthers(entity, NetworkEvent.TANK_KILLED, 
                 tankKilledComponent.lifeCountSpend, 
-                tankKilledComponent.position, 
-                tankKilledComponent.respawnPosition,
-                (int)tankKilledComponent.respawnDirection
+                tankKilledComponent.position
             );
-        }
-    }
-
-    private void SendDestroy() {
-        foreach (var entity in this.filterDestroy) {
-            NetworkHelper.RaiseMasterEventToOthers(entity, NetworkEvent.DESTROY);
         }
     }
 
@@ -86,6 +76,10 @@ public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
                 case NetworkEvent.SET_HITPOINTS:
                     entity.SetComponent(new HitPointsComponent {hitPoints = (int) data[0]});
                     break;
+                case NetworkEvent.SET_INVULNERABILITY:
+                    var lag = (float) PhotonNetwork.Time - (float) data[0];
+                    entity.SetComponent(new InvulnerabilityComponent {time = (float) data[1] - lag});
+                    break;
                 case NetworkEvent.FIRE:
                     entity.SetComponent(new FireEventComponent { 
                         position = (Vector3) data[0], 
@@ -96,8 +90,6 @@ public sealed class NetworkSystem : UpdateSystem, IOnEventCallback {
                     entity.SetComponent(new TankKilledEventComponent {
                         lifeCountSpend = (int) data[0],
                         position = (Vector3) data[1],
-                        respawnPosition = (Vector3) data[2],
-                        respawnDirection = (Direction) data[3],
                     });
                     break;
                 case NetworkEvent.DESTROY:

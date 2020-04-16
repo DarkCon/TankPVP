@@ -1,4 +1,5 @@
-﻿using Morpeh;
+﻿using System;
+using Morpeh;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
 
@@ -55,14 +56,16 @@ public sealed class SpriteSystem : UpdateSystem {
         var animateOnMoveBag = this.filterAnimateOnMovingStarted.Select<AnimateOnMovingComponent>();
         for (int i = 0, length = this.filterAnimateOnMovingStarted.Length; i < length; ++i) {
             ref var moveComponent = ref moveBag.GetComponent(i);
-            ref var animateOnMoveComponent = ref animateOnMoveBag.GetComponent(i);
-            var entity = this.filterAnimateOnMovingStarted.GetEntity(i);
-            
-            ref var animateComponent = ref entity.AddComponent<AnimateSpriteComponent>();
-            animateComponent.loop = true;
-            animateComponent.duration = animateOnMoveComponent.distance / moveComponent.speed;
+            if (moveComponent.speed > 0f) {
+                ref var animateOnMoveComponent = ref animateOnMoveBag.GetComponent(i);
+                var entity = this.filterAnimateOnMovingStarted.GetEntity(i);
 
-            entity.SetComponent(new ChangeSpriteMarker());
+                ref var animateComponent = ref entity.AddComponent<AnimateSpriteComponent>();
+                animateComponent.loop = true;
+                animateComponent.duration = animateOnMoveComponent.distance / moveComponent.speed;
+
+                entity.SetComponent(new ChangeSpriteMarker());
+            }
         }
     }
 
@@ -102,7 +105,14 @@ public sealed class SpriteSystem : UpdateSystem {
                 animationNormalized = animateComponent.time / animateComponent.duration;
             }
 
-            spriteComponent.spriteRenderer.sprite = spriteComponent.spriteDecoder.GetSprite(direction, animationNormalized);
+            try {
+                spriteComponent.spriteRenderer.sprite = spriteComponent.spriteDecoder.GetSprite(direction, animationNormalized);
+            } catch (Exception e) {
+                var obj = entity.GetComponent<GameObjectComponent>().obj;
+                Debug.LogError("fuck");
+            }
+
+            
             
             entity.RemoveComponent<ChangeSpriteMarker>();
         }

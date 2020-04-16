@@ -7,7 +7,7 @@ namespace Tanks.Utils {
             if (entity.IsNullOrDisposed())
                 return;
             
-            CleanNetworkViewIdIfNeed(entity);
+            NetworkDestroyIfNeed(entity);
             EntityHelper.Destroy(entity, world);
         }
 

@@ -46,15 +46,6 @@ public sealed class PlayerLifeSystem : UpdateSystem {
                 lifeCountSpend = lifeComponent.lifeCount - 1,
                 position = posComponent.position 
             };
-
-            for (int j = 0, spawnLength = this.filterSpawn.Length; j < spawnLength; ++j) {
-                ref var spawnComponent = ref spawnBag.GetComponent(j);
-                if (spawnComponent.isPlayer && spawnComponent.team == teamComponent.team) {
-                    tankKilledComponent.respawnPosition = spawnPosBag.GetComponent(j).position;
-                    tankKilledComponent.respawnDirection = spawnDirBag.GetComponent(j).direction;
-                    break;
-                }
-            }
             
             entity.SetComponent(tankKilledComponent);
             entity.RemoveComponent<DestroyEventComponent>();

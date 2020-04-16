@@ -47,11 +47,16 @@ namespace Tanks.Utils {
 
         protected abstract IEntity TakeLocal(string name, Vector3 position, bool setPosition);
 
-        protected static void CleanNetworkViewIdIfNeed(IEntity entity) {
+        protected static void NetworkDestroyIfNeed(IEntity entity) {
             if (entity.Has<NetworkViewComponent>()) {
                 var photonView = entity.GetComponent<NetworkViewComponent>().photonView;
-                if (photonView != null)
+                if (photonView != null) {
+                    if (photonView.ViewID != 0 && photonView.IsMine) {
+                        NetworkHelper.RaiseMyEventToOthers(entity, NetworkEvent.DESTROY);
+                    }
                     PhotonNetwork.LocalCleanPhotonView(photonView);
+                    photonView.ViewID = 0;
+                }
             }
         }
         
@@ -77,6 +82,7 @@ namespace Tanks.Utils {
                 };
 
                 PhotonNetwork.RaiseEvent((byte) NetworkEvent.MANUAL_INSTANTIATE, data, raiseEventOptions, sendOptions);
+                photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
             } else {
                 Debug.LogError("Failed to allocate a ViewId.");
             }
@@ -89,7 +95,7 @@ namespace Tanks.Utils {
                 var name = (string) data[1];
                 var position = (Vector3) data[2];
 
-                var entity = TakeLocal(name, position, false);
+                var entity = TakeLocal(name, position, true);
                 if (entity != null) {
                     var photonView = entity.GetComponent<NetworkViewComponent>().photonView;
                     photonView.ViewID = viewId;

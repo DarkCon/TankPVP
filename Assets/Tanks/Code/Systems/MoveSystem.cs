@@ -36,9 +36,15 @@ public sealed class MoveSystem : UpdateSystem {
 
             if (entity.Has<CollisionEventComponent>()) {
                 ref var collisionComponent = ref entity.GetComponent<CollisionEventComponent>();
-                ref var otherMove = ref collisionComponent.otherEntity.GetComponent<MoveComponent>(out var otherMoveExist); 
+
+                var otherMoveExist = collisionComponent.otherEntity != null 
+                                     && collisionComponent.otherEntity.Has<MoveComponent>();
+                var otherMoveDirection = otherMoveExist
+                    ? collisionComponent.otherEntity.GetComponent<MoveComponent>().direction
+                    : Direction.NONE;
+                
                 if (collisionComponent.extrude >= 0f 
-                    && (!otherMoveExist || DirectionUtils.IsOpposite(otherMove.direction, moveComponent.direction))) {
+                    && (!otherMoveExist || DirectionUtils.IsOpposite(otherMoveDirection, moveComponent.direction))) {
                     var extrude = Mathf.Min(collisionComponent.extrude, moveComponent.speed * deltaTime);
                     posComponent.position -= (Vector3) collisionComponent.contact.distance.normal * extrude;
                     collisionComponent.extrude -= extrude;
