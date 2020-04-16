@@ -7,6 +7,7 @@ using Photon.Pun;
 using Photon.Pun.Demo.Asteroids;
 using Photon.Realtime;
 using Tanks.Constants;
+using Tanks.Sprites;
 using Tanks.Utils;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
@@ -84,14 +85,15 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
             case GameStage.WAIT_ALL_PLAYERS:
                 if (CheckAllPlayerLoadedLevel()) {
                     InitUnits();
+                    FreezeControl();
                     ++stage;
                 }
                 break;
             case GameStage.INIT_START_TIMER:
                 if (InitStartTimer()) {
-                    FreezeControl();
                     stage = GameStage.START_TIMER;
                 } else {
+                    UnFreezeControl();
                     stage = GameStage.GAME;
                 }
                 break;
@@ -115,18 +117,23 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
     private void InitUnits() {
         var network = PhotonNetwork.IsConnected;
         
-        if (network && PhotonNetwork.PlayerList.Length > 1) {
+        if (network) {
             this.playersInfo = PhotonNetwork.PlayerList.Select(player => new PlayerInitInfo {
                 isLocal = player.IsLocal,
                 name = player.NickName,
                 tankSprite = (string) player.CustomProperties[TanksGame.PLAYER_TANK_SPRITE]
             }).ToArray();
-            SpawnTanks(network, this.playersInfo);
         } else {
-            this.playersInfo = new[] {new PlayerInitInfo {isLocal = true, onlyPlayer = true}};
+            this.playersInfo = new[] {new PlayerInitInfo {isLocal = true}};
+        }
+
+        if (PhotonNetwork.PlayerList.Length < 2) {
+            this.playersInfo[0].onlyPlayer = true;
             var playerWithBot = new List<PlayerInitInfo>(this.playersInfo);
             playerWithBot.Add(new PlayerInitInfo {isLocal = true, onlyBots = true});
             SpawnTanks(network, playerWithBot);
+        } else {
+            SpawnTanks(network, this.playersInfo);
         }
         
         RemoveExtraBases(this.playersInfo);
@@ -174,6 +181,7 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
                 
                 if (player.isLocal) {
                     tankEntity.SetComponent(new LocalControlComponent());
+                    tankEntity.AddComponent<FreezeControlMarker>();
                     if (isPlayer) {
                         tankEntity.AddComponent<PlayerControlMarker>();
                     } else {
@@ -307,20 +315,16 @@ public sealed class GameManagerSystem : UpdateSystem, IInRoomCallbacks {
         uiGameOverComponent.gameOverPnl.SetActive(!hasWinner);
         uiGameOverComponent.winnerPnl.SetActive(hasWinner);
         if (hasWinner) {
-            var teamBag = this.filterTanks.Select<TeamComponent>();
-            var spriteBag = this.filterTanks.Select<SpriteComponent>();
-            Sprite sprite = null;
-            for (int i = 0, length = this.filterTanks.Length; i < length; ++i) {
-                if (teamBag.GetComponent(i).team == teamWinner) {
-                    sprite = spriteBag.GetComponent(i).spriteDecoder.GetSprite(Direction.UP, 0f);
-                }
-            }
-            
             var playerInfo = this.playersInfo[teamWinner];
-            if (this.playersInfo.Length > 1) {
-                uiGameOverComponent.txtWinnerName.text = playerInfo.name;
+            if (!string.IsNullOrEmpty(playerInfo.tankSprite)) {
+                uiGameOverComponent.imgWinner.sprite = SpritesCache.FindInLoaded(playerInfo.tankSprite);
+                uiGameOverComponent.imgWinner.gameObject.SetActive(true);
+            } else {
+                uiGameOverComponent.imgWinner.gameObject.SetActive(false);
             }
-            uiGameOverComponent.imgWinner.sprite = sprite;
+            if (this.playersInfo.Length > 1) {
+                uiGameOverComponent.txtWinnerName.text = playerInfo.name;   
+            }
         }
         SyncGameStartTimer(-1f);
         SetLoadedLevel(false);

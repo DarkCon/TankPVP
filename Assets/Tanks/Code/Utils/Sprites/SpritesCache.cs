@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Tanks.Sprites {
@@ -11,6 +12,14 @@ namespace Tanks.Sprites {
                 spritesCache.Add(textureName, sprites);
             }
             return sprites;
+        }
+
+        public static IEnumerable<Sprite> GetAllLoaded() {
+            return spritesCache.Values.SelectMany(array => array);
+        }
+        
+        public static Sprite FindInLoaded(string name) {
+            return GetAllLoaded().FirstOrDefault(s => s.name == name);
         }
     }
 }
